@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">我的闹钟</string>
+    <string name="action_settings">闹钟设置</string>
+    <string name="ringtime">响铃时间</string>
+    <string name="ringtime_blank">填写时间</string>
+	<string name="setting_time">设置时间</string>
+	<string name="ringdate">响铃日期</string>
+	<string name="ringdate_blank">填写日期</string>
+	<string name="setting_date">设置日期</string>
+	<string name="ringcontent">闹钟名称</string>
+	<string name="ringselect">选择铃声</string>
+	<string name="ringselectTitle">请选择铃声:</string>
+	<string name="button_ringselect">铃声选择</string>
+	<string name="ringname">默认铃声</string>
+	<string name="button_ringstart">确定</string>
+	<string name="ringing">懒虫，时间到啦！！！</string>
+	<string name="buttoncancel">关闭闹钟</string>
+	<string name="ringset">闹钟开关</string>
+	<string name="setvibrate">震动</string>
+	<string name="description">这是干嘛的，这是图像</string>
+	<string name="defaultRing">默认铃声</string>
+	<string name="notificationText1">闹铃将于</string>
+	<string name="notificationText2">点</string>
+	<string name="notificationText3">分响起</string>
+	<string name="notificationText4">小时</string>
+	<string name="notificationText5">分后响起</string>
+	<string name="notify_button">关闭闹钟</string>
+</resources>

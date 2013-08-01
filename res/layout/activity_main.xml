@@ -1,0 +1,172 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".MainActivity" >
+
+	<LinearLayout
+	    android:id="@+id/linear1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+	    <TextView
+		    android:id="@+id/ringtime"
+		    android:layout_width="0dp"
+		   	android:layout_height="wrap_content"
+		   	android:layout_weight="0.7"
+		    android:textSize="15sp"
+		    android:text="@string/ringtime" />
+       
+	    <TextView
+	        android:id="@+id/ringtime_blank"
+	       	android:textSize="15sp"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:hint="@string/ringtime"/>
+    	
+    	<Button 
+	        android:id="@+id/button1"
+	        android:textSize="15sp"
+	       	android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/setting_time"
+	        android:onClick="showTimePickerDialog"
+	        />
+	    </LinearLayout>
+	    
+	<LinearLayout
+	    android:layout_below="@id/linear1"
+	   	android:id="@+id/linear2"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+    	<TextView
+    	    android:id="@+id/ringdate"
+    	    android:layout_width="0dp"
+		   	android:layout_height="wrap_content"
+		   	android:layout_weight="0.7"
+		    android:textSize="15sp"
+		    android:text="@string/ringdate"/>
+
+	    <TextView
+	        android:id="@+id/ringdate_blank"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_weight="1"
+	        android:hint="@string/ringdate"
+	        android:textSize="15sp" />
+
+	    <Button 
+	        android:id="@+id/button2"
+	        android:textSize="15sp"
+	       	android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/setting_date"
+	        android:onClick="showDatePickerDialog"
+	        />
+	    
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:layout_below="@id/linear2"
+	    android:id="@+id/linear3"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+	    <TextView
+    	    android:id="@+id/ringcontent"
+    	    android:layout_width="0dp"
+		   	android:layout_height="wrap_content"
+		   	android:layout_weight="1"
+		    android:textSize="15sp"
+		    android:text="@string/ringcontent" />
+	    <EditText
+	        android:id="@+id/ringcontent_blank"
+	       	android:textSize="15sp"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:hint="@string/ringcontent" />
+	    
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:layout_below="@id/linear3"
+	    android:id="@+id/linear4"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+	    <TextView
+    	    android:id="@+id/ringselect"
+    	    android:layout_width="0dp"
+		   	android:layout_height="wrap_content"
+		   	android:layout_weight="0.7"
+		    android:textSize="15sp"
+		    android:text="@string/ringselect" />
+	    <TextView
+    	    android:id="@+id/ringname"
+    	    android:layout_width="0dp"
+		   	android:layout_height="wrap_content"
+		   	android:layout_weight="1"
+		    android:textSize="15sp"
+		    android:layout_marginLeft="10dp"
+	        android:layout_marginRight="10dp"
+	        android:textIsSelectable="true"
+		    android:hint="@string/ringname" />
+	    <Button
+	        android:id="@+id/button_ringselect"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textSize="15sp"
+	        android:text="@string/button_ringselect"
+	        android:onClick="selectRingtone"/>	        
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_below="@id/linear4"
+	    android:id="@+id/linear6"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+	    <TextView 
+	        android:textSize="15sp"
+	        android:id="@+id/Text_setVibrate"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:text="@string/setvibrate"/>
+	    <ToggleButton
+	        android:id="@+id/Vibrate_set"
+	        android:layout_marginLeft="10dp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:onClick="setVibrate"/>
+	    <TextView
+    	    android:textSize="15sp"
+	        android:id="@+id/Text_setring"
+	        android:layout_marginLeft="47dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/ringset"/>
+	 	
+	 	<ToggleButton 
+		    android:id="@+id/Ring_set"
+		    android:layout_marginLeft="10dp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:onClick="setRing"/>	    
+	</LinearLayout>
+
+</RelativeLayout>
