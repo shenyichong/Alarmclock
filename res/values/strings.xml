@@ -26,5 +26,6 @@
 	<string name="notificationText3">分响起</string>
 	<string name="notificationText4">小时</string>
 	<string name="notificationText5">分后响起</string>
+	<string name="notificationText6">从现在起不到一分钟</string>
 	<string name="notify_button">关闭闹钟</string>
 </resources>

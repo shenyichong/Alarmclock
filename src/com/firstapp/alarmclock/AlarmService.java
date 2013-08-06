@@ -2,6 +2,8 @@ package com.firstapp.alarmclock;
 
 
 
+import java.util.Calendar;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -24,6 +26,12 @@ public class AlarmService extends Service{
 		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		Intent i=new Intent(this, MyAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
+		Calendar test = Calendar.getInstance();
+		test.setTimeInMillis(intent.getLongExtra(MainActivity.TIMETOSEND, 0));
+		
+		int hour=test.MINUTE;
+		int minute= test.HOUR_OF_DAY;
+		
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, intent.getLongExtra(MainActivity.TIMETOSEND, 0), pendingIntent);
 	    
 		NotificationCompat.Builder notebuilder=new NotificationCompat.Builder(this);

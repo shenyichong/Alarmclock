@@ -73,7 +73,8 @@ public final class R {
         public static final int notificationText3=0x7f050016;
         public static final int notificationText4=0x7f050017;
         public static final int notificationText5=0x7f050018;
-        public static final int notify_button=0x7f050019;
+        public static final int notificationText6=0x7f050019;
+        public static final int notify_button=0x7f05001a;
         public static final int ringcontent=0x7f050008;
         public static final int ringdate=0x7f050005;
         public static final int ringdate_blank=0x7f050006;

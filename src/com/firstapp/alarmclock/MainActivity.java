@@ -111,7 +111,7 @@ public class MainActivity extends Activity
 	public void onResume(){
 		super.onResume();
 		//Set AlarmClock
-		this.setRing(this.findViewById(R.id.Ring_set));
+	//	this.setRing(this.findViewById(R.id.Ring_set));
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -147,12 +147,16 @@ public class MainActivity extends Activity
 		int hoursLeft=(int)Math.floor((set-now)/1000/3600);
 		long mod=(set-now)%(1000*3600);
 		int minutesLeft=(int)Math.floor(mod/1000/60);
-		if (hoursLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
+		if (minutesLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
+			Toast.makeText(this, getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+		}
+		else if (hoursLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
 		else if(((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
+		
 	}	
 	/*select Time and Date*/
 	public void showTimePickerDialog(View v) {
@@ -207,7 +211,6 @@ public class MainActivity extends Activity
 			else{
 				music_name = getResources().getString(R.string.defaultRing);
 			}
-			
 		    if (ringtone_Uri != null) {
 			    TextView activity_edittext = (TextView)this.findViewById(R.id.ringname);
 			    activity_edittext.setText(music_name);
@@ -219,7 +222,8 @@ public class MainActivity extends Activity
 		boolean on = ((ToggleButton) view).isChecked();
 		buttonVibrate=on;
 	}
-	/*start alarm*/
+	
+	/*start the alarm*/
 	public void setRing(View view){
 		
 		boolean on = ((ToggleButton) view).isChecked();
@@ -233,11 +237,11 @@ public class MainActivity extends Activity
 		Intent toService = new Intent(this,AlarmService.class);
 		
 		if (on && setORnot) {
-		    // Enable vibrate
+		    // turn on the alarm 
 			toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
 			this.startService(toService);
 		} else {
-	        // Disable vibrate
+	        // turn off the alarm
 	    	this.stopService(toService);
 		}
 	}
