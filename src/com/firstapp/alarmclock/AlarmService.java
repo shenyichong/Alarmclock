@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.view.Gravity;
+import android.widget.Toast;
 
 
 public class AlarmService extends Service{
@@ -29,11 +31,12 @@ public class AlarmService extends Service{
 		Calendar test = Calendar.getInstance();
 		test.setTimeInMillis(intent.getLongExtra(MainActivity.TIMETOSEND, 0));
 		
-		int hour=test.MINUTE;
-		int minute= test.HOUR_OF_DAY;
-		
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, intent.getLongExtra(MainActivity.TIMETOSEND, 0), pendingIntent);
-	    
+		
+		Toast toast = Toast.makeText(this,"Alarm service is set",2);
+		toast.setGravity(Gravity.TOP|Gravity.RIGHT, 0, 0);
+		toast.show();
+		
 		NotificationCompat.Builder notebuilder=new NotificationCompat.Builder(this);
 		notebuilder.setSmallIcon(R.drawable.notification_bar);
 		notebuilder.setContentTitle(getResources().getString(R.string.app_name));
@@ -52,7 +55,7 @@ public class AlarmService extends Service{
 		//set notification to react with touch
 		notebuilder.setContentIntent(resultPendingIntent);
 		//set expanded zone of notification to react with touch
-		notebuilder.addAction(R.drawable.notify_button, getResources().getString(R.string.notify_button), resultPendingIntent);
+		//notebuilder.addAction(R.drawable.notify_button, getResources().getString(R.string.notify_button), resultPendingIntent);
 		
 		Notification note = notebuilder.build();
 		this.startForeground(1, note);
