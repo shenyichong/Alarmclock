@@ -1,6 +1,9 @@
 package com.firstapp.alarmclock;
 
 
+import com.firstapp.alarmclock.R;
+import com.firstapp.alarmclock.R.id;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;

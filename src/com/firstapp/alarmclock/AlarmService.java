@@ -1,9 +1,5 @@
 package com.firstapp.alarmclock;
 
-
-
-import java.util.Calendar;
-
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -14,8 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.view.Gravity;
-import android.widget.Toast;
 
 
 public class AlarmService extends Service{
@@ -25,18 +19,12 @@ public class AlarmService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.
-		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		Intent i=new Intent(this, MyAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
-		Calendar test = Calendar.getInstance();
-		test.setTimeInMillis(intent.getLongExtra(MainActivity.TIMETOSEND, 0));
 		
+		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, intent.getLongExtra(MainActivity.TIMETOSEND, 0), pendingIntent);
-		
-		Toast toast = Toast.makeText(this,"Alarm service is set",2);
-		toast.setGravity(Gravity.TOP|Gravity.RIGHT, 0, 0);
-		toast.show();
-		
+	
 		NotificationCompat.Builder notebuilder=new NotificationCompat.Builder(this);
 		notebuilder.setSmallIcon(R.drawable.notification_bar);
 		notebuilder.setContentTitle(getResources().getString(R.string.app_name));

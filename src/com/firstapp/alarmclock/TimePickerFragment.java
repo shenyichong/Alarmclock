@@ -5,14 +5,13 @@ package com.firstapp.alarmclock;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class TimePickerFragment extends DialogFragment
-						implements TimePickerDialog.OnTimeSetListener {
+						implements CustomTimePickerDialog.OnTimeSetListener {
 	
 	OnAlarmSetListener mCallback;
 	 
@@ -40,7 +39,7 @@ public class TimePickerFragment extends DialogFragment
 		int hour=MainActivity.Hour;
 		
 		// Create a new instance of TimePickerDialog and return it
-		return new TimePickerDialog(getActivity(), this, hour, minute,
+		return new CustomTimePickerDialog(getActivity(), this, hour, minute,
 		DateFormat.is24HourFormat(getActivity()));
 	}
 	
@@ -49,7 +48,6 @@ public class TimePickerFragment extends DialogFragment
 		TextView activity_edittext = (TextView)getActivity().findViewById(R.id.ringtime_blank);
 		activity_edittext.setText(String.valueOf(hourOfDay)+":"+ String.valueOf(minute));
 		MainActivity.Minute=minute;MainActivity.Hour=hourOfDay;
-		
 		mCallback.onAlarmTimeSet();
 	}
 }

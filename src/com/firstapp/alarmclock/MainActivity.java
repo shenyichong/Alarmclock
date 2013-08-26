@@ -8,7 +8,6 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -167,7 +166,7 @@ public class MainActivity extends Activity
 	    DialogFragment newFragment = new DatePickerFragment();
 	    newFragment.show(getFragmentManager(), "datePicker");
 	}
-	public void onAlarmDateSet(){
+	public void onAlarmDateSet(){	
 		//Set AlarmClock
 	    this.setRing(this.findViewById(R.id.Ring_set));
 	}
