@@ -1,7 +1,5 @@
 package com.firstapp.alarmclock;
 
-
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
