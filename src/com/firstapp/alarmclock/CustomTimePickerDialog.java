@@ -15,69 +15,27 @@ public class CustomTimePickerDialog extends TimePickerDialog{
     	
     }
     
+    @Override
+    public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
+    	minute = getRoundedMinute(minute);
+    	timePicker.setCurrentMinute(minute);
+    }
+
+    public static int getRoundedMinute(int minute){
+         if(minute % TIME_PICKER_INTERVAL != 0){
+            int minuteFloor = minute - (minute % TIME_PICKER_INTERVAL);
+            minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
+            if (minute == 60)  minute=0;
+         }
+
+        return minute;
+    }
+
     
-//    @Override
-//    public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
-//    	minute = getRoundedMinute(minute);
-//    	timePicker.setCurrentMinute(minute);
-//    }
-//
-//    public static int getRoundedMinute(int minute){
-//         if(minute % TIME_PICKER_INTERVAL != 0){
-//            int minuteFloor = minute - (minute % TIME_PICKER_INTERVAL);
-//            minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
-//            if (minute == 60)  minute=0;
-//         }
-//
-//        return minute;
-//    }
-
-    private TimePicker.OnTimeChangedListener mStartTimeChangedListener =
-    	    new TimePicker.OnTimeChangedListener() {
-
-    	    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-    	        updateDisplay(view,hourOfDay, minute);          
-    	    }
-    	};
-    private TimePicker.OnTimeChangedListener mNullTimeChangedListener =
-		    new TimePicker.OnTimeChangedListener() {
-
-		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-
-		    }
-		};
-
-	private void updateDisplay(TimePicker timePicker,  int hourOfDay, int minute) { 
-
-	    // do calculation of next time 
-	    int nextMinute = 0;     
-	    if (minute >= 45 && minute <= 59)
-	        nextMinute = 45;
-	    else if(minute >= 30)
-	        nextMinute = 30;
-	    else if(minute >= 15)
-	        nextMinute = 15;
-	    else if(minute > 0)
-	        nextMinute = 0;
-	    else {          
-	        nextMinute = 45;
-	    }
-
-	    // remove ontimechangedlistener to prevent stackoverflow/infinite loop
-	    timePicker.setOnTimeChangedListener(mNullTimeChangedListener);
-
-	    // set minute
-	    timePicker.setCurrentMinute(nextMinute);
-
-	    // hook up ontimechangedlistener again
-	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener); 
-	}
-    
-    
-    private CustomTimePickerDialog.OnTimeSetListener timeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
+    private OnTimeSetListener timeSetListener = new OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-
+        	
         }
     };
     	

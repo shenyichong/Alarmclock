@@ -12,12 +12,11 @@ public class TimePickerFragment extends DialogFragment
 						implements CustomTimePickerDialog.OnTimeSetListener {
 	
 	OnAlarmSetListener mCallback;
-	 
 	public interface OnAlarmSetListener {
         public void onAlarmTimeSet();
     }
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(Activity activity){
         super.onAttach(activity);
         
         // This makes sure that the container activity has implemented
@@ -42,7 +41,7 @@ public class TimePickerFragment extends DialogFragment
 	}
 	
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-	// Do something with the time chosen by the user
+		// Do something with the time chosen by the user
 		TextView activity_edittext = (TextView)getActivity().findViewById(R.id.ringtime_blank);
 		activity_edittext.setText(String.valueOf(hourOfDay)+":"+ String.valueOf(minute));
 		MainActivity.Minute=minute;MainActivity.Hour=hourOfDay;
