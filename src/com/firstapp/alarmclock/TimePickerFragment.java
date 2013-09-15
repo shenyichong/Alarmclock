@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.app.TimePickerDialog;
 
 public class TimePickerFragment extends DialogFragment
-						implements CustomTimePickerDialog.OnTimeSetListener {
+						implements TimePickerDialog.OnTimeSetListener {
 	
 	OnAlarmSetListener mCallback;
 	public interface OnAlarmSetListener {
@@ -36,7 +37,7 @@ public class TimePickerFragment extends DialogFragment
 		int hour=MainActivity.Hour;
 		
 		// Create a new instance of TimePickerDialog and return it
-		return new CustomTimePickerDialog(getActivity(), this, hour, minute,
+		return new TimePickerDialog(getActivity(), this, hour, minute,
 		DateFormat.is24HourFormat(getActivity()));
 	}
 	
