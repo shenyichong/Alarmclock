@@ -20,7 +20,7 @@
 		    android:textSize="15sp"
 		    android:text="@string/ringtime" />
        
-	    <TextView
+	    <!--  <TextView
 	        android:id="@+id/ringtime_blank"
 	       	android:textSize="15sp"
 	        android:layout_width="0dp"
@@ -29,8 +29,14 @@
 	        android:layout_marginLeft="10dp"
 	        android:layout_marginRight="10dp"
 	        android:hint="@string/ringtime"/>
+	        -->
+
+	    <TimePicker
+	        android:id="@+id/TimePicker"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
     	
-    	<Button 
+    	<!--  <Button 
 	        android:id="@+id/button1"
 	        android:textSize="15sp"
 	       	android:layout_width="0dp"
@@ -38,7 +44,8 @@
 	        android:layout_weight="1"
 	        android:text="@string/setting_time"
 	        android:onClick="showTimePickerDialog"
-	        />
+	        />	        
+	        -->
 	    </LinearLayout>
 	    
 	<LinearLayout

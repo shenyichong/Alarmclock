@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+import android.R.integer;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -14,12 +15,13 @@ import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity 
-			implements DatePickerFragment.OnAlarmSetListener,TimePickerFragment.OnAlarmSetListener{
+			implements DatePickerFragment.OnAlarmSetListener{
 	
 	private static final String STATE_HOUR = "HOUR";
 	private static final String STATE_MINUTE = "MINUTE";
@@ -31,7 +33,7 @@ public class MainActivity extends Activity
 	private static final String STATE_MUSIC = "MUSIC";
 	private static final String STATE_BUTTON = "BUTTON";
 	private static final String STATE_VIBRATE= "VIBRATE";
-	
+	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
 	
 	 
@@ -45,6 +47,46 @@ public class MainActivity extends Activity
 	static String music_name;
 	static boolean buttonOn;
 	static boolean buttonVibrate;
+	
+	private TimePicker.OnTimeChangedListener mStartTimeChangedListener =
+		    new TimePicker.OnTimeChangedListener() {
+
+		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+		        updateDisplay(view, hourOfDay, minute);
+		    }
+		};
+
+	private TimePicker.OnTimeChangedListener mNullTimeChangedListener =
+		    new TimePicker.OnTimeChangedListener() {
+	
+		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+		    
+		    }
+		};
+	
+	private void updateDisplay(TimePicker timePicker, int hourOfDay, int minute) { 
+
+	    // do calculation of next time 
+		int nextMinute = 0;     
+		if(minute % TIME_PICKER_INTERVAL != 0){
+            int minuteFloor = minute - (minute % TIME_PICKER_INTERVAL);
+            minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
+            if (minute == 60)  minute=0;
+         }
+		nextMinute=minute;
+
+	    // remove ontimechangedlistener to prevent stackoverflow/infinite loop
+	    timePicker.setOnTimeChangedListener(mNullTimeChangedListener);
+
+	    // set minute
+	    timePicker.setCurrentMinute(nextMinute);
+	    //set the Timepicker's time
+        MainActivity.Hour=hourOfDay;
+        MainActivity.Minute=nextMinute;
+
+	    // hook up ontimechangedlistener again
+	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +111,6 @@ public class MainActivity extends Activity
 			music_name=getResources().getString(R.string.defaultRing);
 			buttonOn=false;
 			buttonVibrate=false;
-			
-			TextView ringtime=(TextView)this.findViewById(R.id.ringtime_blank);
-			TextView ringdate=(TextView)this.findViewById(R.id.ringdate_blank);
-			TextView ringname=(TextView)this.findViewById(R.id.ringname);
-			ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
-			ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
-			ringtime.setText(String.valueOf(Hour)+":"+ String.valueOf(Minute));
-			ringdate.setText(String.valueOf(Month + 1) + "/" + String.valueOf(Day) + "/" + String.valueOf(Year));
-			ringname.setText(music_name);
-			buttonflag.setChecked(buttonOn);
-			buttonVflag.setChecked(buttonVibrate);
 		}
 		else{
 			Hour =settings.getInt(STATE_HOUR,0);
@@ -90,19 +121,22 @@ public class MainActivity extends Activity
 		    ringtone_Uri = Uri.parse(settings.getString(STATE_URI, "content://settings/system/ringtone"));
 		    music_name=settings.getString(STATE_MUSIC, getResources().getString(R.string.defaultRing));
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
-		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);
-		    
-		    TextView ringtime=(TextView)this.findViewById(R.id.ringtime_blank);
-		    TextView ringdate=(TextView)this.findViewById(R.id.ringdate_blank);
-		    TextView ringname=(TextView)this.findViewById(R.id.ringname);
-		    ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
-		    ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
-			ringtime.setText(String.valueOf(Hour)+":"+ String.valueOf(Minute));
-			ringdate.setText(String.valueOf(Month + 1) + "/" + String.valueOf(Day) + "/" + String.valueOf(Year));
-			ringname.setText(music_name);
-			buttonflag.setChecked(buttonOn);
-			buttonVflag.setChecked(buttonVibrate);
+		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);   
 		}
+		//setup TimePicker
+		TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker);
+		timePicker.setIs24HourView(true);
+		timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
+		TextView ringdate=(TextView)this.findViewById(R.id.ringdate_blank);
+		TextView ringname=(TextView)this.findViewById(R.id.ringname);
+		ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
+		ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
+		timePicker.setCurrentHour(Hour);
+	    timePicker.setCurrentMinute(Minute);
+		ringdate.setText(String.valueOf(Month + 1) + "/" + String.valueOf(Day) + "/" + String.valueOf(Year));
+		ringname.setText(music_name);
+		buttonflag.setChecked(buttonOn);
+		buttonVflag.setChecked(buttonVibrate);
 	}
 
 	
@@ -137,6 +171,8 @@ public class MainActivity extends Activity
 	    editor.putBoolean(STATE_BUTTON, buttonflag.isChecked());
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
+	    
+	    
 	    //show how long will take before the alarm goes off.
 	    Calendar c= Calendar.getInstance();
 		long now=c.getTimeInMillis();
@@ -158,20 +194,11 @@ public class MainActivity extends Activity
 		
 	}	
 	/*select Time and Date*/
-	public void showTimePickerDialog(View v) {
-	    DialogFragment newFragment = new TimePickerFragment();
-	    newFragment.show(getFragmentManager(), "timePicker");
-	}
 	public void showDatePickerDialog(View v) {
 	    DialogFragment newFragment = new DatePickerFragment();
 	    newFragment.show(getFragmentManager(), "datePicker");
 	}
 	public void onAlarmDateSet(){	
-		//Set AlarmClock
-	    this.setRing(this.findViewById(R.id.Ring_set));
-	}
-	
-	public void onAlarmTimeSet(){
 		//Set AlarmClock
 	    this.setRing(this.findViewById(R.id.Ring_set));
 	}

@@ -28,30 +28,29 @@ public final class R {
         public static final int notify_button=0x7f020003;
     }
     public static final class id {
-        public static final int Ring_set=0x7f080013;
-        public static final int Text_setVibrate=0x7f080010;
-        public static final int Text_setring=0x7f080012;
-        public static final int Vibrate_set=0x7f080011;
-        public static final int action_settings=0x7f080017;
-        public static final int button1=0x7f080003;
-        public static final int button2=0x7f080007;
-        public static final int button_cancel=0x7f080016;
-        public static final int button_ringselect=0x7f08000e;
-        public static final int image_Alarm=0x7f080015;
+        public static final int Ring_set=0x7f080012;
+        public static final int Text_setVibrate=0x7f08000f;
+        public static final int Text_setring=0x7f080011;
+        public static final int TimePicker=0x7f080002;
+        public static final int Vibrate_set=0x7f080010;
+        public static final int action_settings=0x7f080016;
+        public static final int button2=0x7f080006;
+        public static final int button_cancel=0x7f080015;
+        public static final int button_ringselect=0x7f08000d;
+        public static final int image_Alarm=0x7f080014;
         public static final int linear1=0x7f080000;
-        public static final int linear2=0x7f080004;
-        public static final int linear3=0x7f080008;
-        public static final int linear4=0x7f08000b;
-        public static final int linear6=0x7f08000f;
-        public static final int ringcontent=0x7f080009;
-        public static final int ringcontent_blank=0x7f08000a;
-        public static final int ringdate=0x7f080005;
-        public static final int ringdate_blank=0x7f080006;
-        public static final int ringing=0x7f080014;
-        public static final int ringname=0x7f08000d;
-        public static final int ringselect=0x7f08000c;
+        public static final int linear2=0x7f080003;
+        public static final int linear3=0x7f080007;
+        public static final int linear4=0x7f08000a;
+        public static final int linear6=0x7f08000e;
+        public static final int ringcontent=0x7f080008;
+        public static final int ringcontent_blank=0x7f080009;
+        public static final int ringdate=0x7f080004;
+        public static final int ringdate_blank=0x7f080005;
+        public static final int ringing=0x7f080013;
+        public static final int ringname=0x7f08000c;
+        public static final int ringselect=0x7f08000b;
         public static final int ringtime=0x7f080001;
-        public static final int ringtime_blank=0x7f080002;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
