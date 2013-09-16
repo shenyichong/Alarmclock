@@ -16,71 +16,22 @@
 		    android:id="@+id/ringtime"
 		    android:layout_width="0dp"
 		   	android:layout_height="wrap_content"
-		   	android:layout_weight="0.7"
+		   	android:layout_weight="1"
 		    android:textSize="15sp"
 		    android:text="@string/ringtime" />
        
-	    <TextView
-	        android:id="@+id/ringtime_blank"
-	       	android:textSize="15sp"
+	    <TimePicker
+	        android:id="@+id/TimePicker"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
-	        android:hint="@string/ringtime"/>
+	        android:visibility="visible" />
     	
-    	<Button 
-	        android:id="@+id/button1"
-	        android:textSize="15sp"
-	       	android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/setting_time"
-	        android:onClick="showTimePickerDialog"
-	        />
-	    </LinearLayout>
-	    
-	<LinearLayout
-	    android:layout_below="@id/linear1"
-	   	android:id="@+id/linear2"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    >
-    	<TextView
-    	    android:id="@+id/ringdate"
-    	    android:layout_width="0dp"
-		   	android:layout_height="wrap_content"
-		   	android:layout_weight="0.7"
-		    android:textSize="15sp"
-		    android:text="@string/ringdate"/>
-
-	    <TextView
-	        android:id="@+id/ringdate_blank"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
-	        android:layout_weight="1"
-	        android:hint="@string/ringdate"
-	        android:textSize="15sp" />
-
-	    <Button 
-	        android:id="@+id/button2"
-	        android:textSize="15sp"
-	       	android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/setting_date"
-	        android:onClick="showDatePickerDialog"
-	        />
-	    
-	</LinearLayout>
+    </LinearLayout>
 	
 	<LinearLayout
-	    android:layout_below="@id/linear2"
-	    android:id="@+id/linear3"
+	    android:layout_below="@id/linear1"
+	    android:id="@+id/linear2"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
@@ -103,8 +54,8 @@
 	</LinearLayout>
 	
 	<LinearLayout
-	    android:layout_below="@id/linear3"
-	    android:id="@+id/linear4"
+	    android:layout_below="@id/linear2"
+	    android:id="@+id/linear3"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal">
@@ -136,8 +87,8 @@
 	</LinearLayout>
 	
 	<LinearLayout
-		android:layout_below="@id/linear4"
-	    android:id="@+id/linear6"
+		android:layout_below="@id/linear3"
+	    android:id="@+id/linear4"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal">
