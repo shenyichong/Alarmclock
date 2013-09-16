@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
-import android.R.integer;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -20,8 +19,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-public class MainActivity extends Activity 
-			implements DatePickerFragment.OnAlarmSetListener{
+public class MainActivity extends Activity {
 	
 	private static final String STATE_HOUR = "HOUR";
 	private static final String STATE_MINUTE = "MINUTE";
@@ -80,10 +78,13 @@ public class MainActivity extends Activity
 
 	    // set minute
 	    timePicker.setCurrentMinute(nextMinute);
+	    
 	    //set the Timepicker's time
         MainActivity.Hour=hourOfDay;
         MainActivity.Minute=nextMinute;
-
+        //Set AlarmClock
+	    this.setRing(this.findViewById(R.id.Ring_set));
+        
 	    // hook up ontimechangedlistener again
 	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
 	}
@@ -126,14 +127,13 @@ public class MainActivity extends Activity
 		//setup TimePicker
 		TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker);
 		timePicker.setIs24HourView(true);
-		timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
-		TextView ringdate=(TextView)this.findViewById(R.id.ringdate_blank);
+		
 		TextView ringname=(TextView)this.findViewById(R.id.ringname);
 		ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
 		ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
 		timePicker.setCurrentHour(Hour);
 	    timePicker.setCurrentMinute(Minute);
-		ringdate.setText(String.valueOf(Month + 1) + "/" + String.valueOf(Day) + "/" + String.valueOf(Year));
+	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
@@ -172,7 +172,6 @@ public class MainActivity extends Activity
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
 	    
-	    
 	    //show how long will take before the alarm goes off.
 	    Calendar c= Calendar.getInstance();
 		long now=c.getTimeInMillis();
@@ -193,15 +192,6 @@ public class MainActivity extends Activity
 		}
 		
 	}	
-	/*select Time and Date*/
-	public void showDatePickerDialog(View v) {
-	    DialogFragment newFragment = new DatePickerFragment();
-	    newFragment.show(getFragmentManager(), "datePicker");
-	}
-	public void onAlarmDateSet(){	
-		//Set AlarmClock
-	    this.setRing(this.findViewById(R.id.Ring_set));
-	}
 	
 	
 	/*select ring*/
