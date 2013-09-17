@@ -7,14 +7,14 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.TimePicker;
+//import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 	private static final String STATE_MUSIC = "MUSIC";
 	private static final String STATE_BUTTON = "BUTTON";
 	private static final String STATE_VIBRATE= "VIBRATE";
-	private static final int TIME_PICKER_INTERVAL = 5;
+//	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
 	
 	 
@@ -46,48 +46,97 @@ public class MainActivity extends Activity {
 	static boolean buttonOn;
 	static boolean buttonVibrate;
 	
-	private TimePicker.OnTimeChangedListener mStartTimeChangedListener =
-		    new TimePicker.OnTimeChangedListener() {
-
-		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-		        updateDisplay(view, hourOfDay, minute);
-		    }
-		};
-
-	private TimePicker.OnTimeChangedListener mNullTimeChangedListener =
-		    new TimePicker.OnTimeChangedListener() {
+//	private TimePicker.OnTimeChangedListener mStartTimeChangedListener =
+//		    new TimePicker.OnTimeChangedListener() {
+//
+//		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//		        updateDisplay(view, hourOfDay, minute);
+//		    }
+//		};
+//
+//	private TimePicker.OnTimeChangedListener mNullTimeChangedListener =
+//		    new TimePicker.OnTimeChangedListener() {
+//	
+//		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//		    
+//		    }
+//		};
+//	
+//	private void updateDisplay(TimePicker timePicker, int hourOfDay, int minute) { 
+//
+//	    // do calculation of next time 
+//		int nextMinute = 0;     
+//		if(minute % TIME_PICKER_INTERVAL != 0){
+//            int minuteFloor = minute - (minute % TIME_PICKER_INTERVAL);
+//            minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
+//            if (minute == 60)  minute=0;
+//         }
+//		nextMinute=minute;
+//
+//	    // remove ontimechangedlistener to prevent stackoverflow/infinite loop
+//	    timePicker.setOnTimeChangedListener(mNullTimeChangedListener);
+//
+//	    // set minute
+//	    timePicker.setCurrentMinute(nextMinute);
+//	    
+//	    //set the Timepicker's time
+//        MainActivity.Hour=hourOfDay;
+//        MainActivity.Minute=nextMinute;
+//        //Set AlarmClock
+//	    this.setRing(this.findViewById(R.id.Ring_set));
+//        
+//	    // hook up ontimechangedlistener again
+//	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
+//	}
 	
-		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-		    
-		    }
-		};
+	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
+
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
+			// TODO Auto-generated method stub
+			Hour=progress/100*60;
+			TextView hourView = (TextView)findViewById(R.id.ringHour);
+			hourView.setText(toString(Hour));
+		}
+
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 	
-	private void updateDisplay(TimePicker timePicker, int hourOfDay, int minute) { 
+	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener2 = new SeekBar.OnSeekBarChangeListener(){
 
-	    // do calculation of next time 
-		int nextMinute = 0;     
-		if(minute % TIME_PICKER_INTERVAL != 0){
-            int minuteFloor = minute - (minute % TIME_PICKER_INTERVAL);
-            minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
-            if (minute == 60)  minute=0;
-         }
-		nextMinute=minute;
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
+			// TODO Auto-generated method stub
+			Minute=progress/100*60;	
+			TextView MinuteView = (TextView)findViewById(R.id.ringMinute);
+			MinuteView.setText(Minute);
+		}
 
-	    // remove ontimechangedlistener to prevent stackoverflow/infinite loop
-	    timePicker.setOnTimeChangedListener(mNullTimeChangedListener);
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+			// TODO Auto-generated method stub
+			
+		}
 
-	    // set minute
-	    timePicker.setCurrentMinute(nextMinute);
-	    
-	    //set the Timepicker's time
-        MainActivity.Hour=hourOfDay;
-        MainActivity.Minute=nextMinute;
-        //Set AlarmClock
-	    this.setRing(this.findViewById(R.id.Ring_set));
-        
-	    // hook up ontimechangedlistener again
-	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
-	}
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,16 +173,21 @@ public class MainActivity extends Activity {
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
 		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);   
 		}
-		//setup TimePicker
-		TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker);
-		timePicker.setIs24HourView(true);
+//		//setup TimePicker
+//		TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker);
+//		timePicker.setIs24HourView(true);
+		
+		SeekBar HourSet = (SeekBar)findViewById(R.id.seekBar1); 
+		SeekBar MinuteSet = (SeekBar)findViewById(R.id.seekBar2);
+		HourSet.setOnSeekBarChangeListener(mSeekBarChangeListener1);
+		MinuteSet.setOnSeekBarChangeListener(mSeekBarChangeListener2);
 		
 		TextView ringname=(TextView)this.findViewById(R.id.ringname);
 		ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
 		ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
-		timePicker.setCurrentHour(Hour);
-	    timePicker.setCurrentMinute(Minute);
-	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
+//		timePicker.setCurrentHour(Hour);
+//	    timePicker.setCurrentMinute(Minute);
+//	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
