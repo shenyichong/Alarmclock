@@ -7,11 +7,14 @@
 .metadata
 bin/
 tmp/
+BuildConfig.java
+project.properties
 *.tmp
 *.bak
 *.swp
+*.txt
 *~.nib
-local.properties
+*.properties
 .classpath
 .settings/
 .loadpath

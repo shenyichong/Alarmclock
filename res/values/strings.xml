@@ -6,9 +6,6 @@
     <string name="ringtime">响铃时间</string>
     <string name="ringtime_blank">填写时间</string>
 	<string name="setting_time">设置时间</string>
-	<string name="ringdate">响铃日期</string>
-	<string name="ringdate_blank">填写日期</string>
-	<string name="setting_date">设置日期</string>
 	<string name="ringcontent">闹钟名称</string>
 	<string name="ringselect">选择铃声</string>
 	<string name="ringselectTitle">请选择铃声:</string>
