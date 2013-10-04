@@ -1,10 +1,6 @@
 package com.firstapp.alarmclock;
 
 import java.util.Calendar;
-
-import javax.xml.transform.Templates;
-
-import android.R.integer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,48 +46,6 @@ public class MainActivity extends Activity {
 	static boolean buttonOn;
 	static boolean buttonVibrate;
 	
-//	private TimePicker.OnTimeChangedListener mStartTimeChangedListener =
-//		    new TimePicker.OnTimeChangedListener() {
-//
-//		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-//		        updateDisplay(view, hourOfDay, minute);
-//		    }
-//		};
-//
-//	private TimePicker.OnTimeChangedListener mNullTimeChangedListener =
-//		    new TimePicker.OnTimeChangedListener() {
-//	
-//		    public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-//		    
-//		    }
-//		};
-//	
-//	private void updateDisplay(TimePicker timePicker, int hourOfDay, int minute) { 
-//
-//	    // do calculation of next time 
-//		int nextMinute = 0;     
-//		if(minute % TIME_PICKER_INTERVAL != 0){
-//            int minuteFloor = minute - (minute % TIME_PICKER_INTERVAL);
-//            minute = minuteFloor + (minute == minuteFloor + 1 ? TIME_PICKER_INTERVAL : 0);
-//            if (minute == 60)  minute=0;
-//         }
-//		nextMinute=minute;
-//
-//	    // remove ontimechangedlistener to prevent stackoverflow/infinite loop
-//	    timePicker.setOnTimeChangedListener(mNullTimeChangedListener);
-//
-//	    // set minute
-//	    timePicker.setCurrentMinute(nextMinute);
-//	    
-//	    //set the Timepicker's time
-//        MainActivity.Hour=hourOfDay;
-//        MainActivity.Minute=nextMinute;
-//        //Set AlarmClock
-//	    this.setRing(this.findViewById(R.id.Ring_set));
-//        
-//	    // hook up ontimechangedlistener again
-//	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
-//	}
 	
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
 
@@ -109,7 +63,22 @@ public class MainActivity extends Activity {
 			TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
 			Integer tempHourInteger = Hour;
 			Integer tempMinuteInteger = Minute;
-			hour_minute_View.setText(tempHourInteger.toString()+":"+tempMinuteInteger.toString());
+			if (tempHourInteger==24) {
+				tempHourInteger=0;
+			}
+			if (tempMinuteInteger==60) {
+				tempMinuteInteger=0;
+			}
+			
+			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
+				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
+			}else if (tempMinuteInteger < 10) {
+				hour_minute_View.setText(tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString());
+			}else if( tempHourInteger < 10){
+				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString());
+			}else {
+				hour_minute_View.setText(tempHourInteger.toString()+":"+ tempMinuteInteger.toString());
+			}
 		}
 
 		@Override
@@ -142,9 +111,23 @@ public class MainActivity extends Activity {
 			HourSet.setProgress(progressShowFloat.intValue()+progressFloat.intValue());
 			
 			//change the indicator once the thumb moves.
-			
 			TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
-			hour_minute_View.setText(tempHourInteger.toString()+":"+tempMinuteInteger.toString());
+			if (tempHourInteger==24) {
+				tempHourInteger=0;
+			}
+			if (tempMinuteInteger==60) {
+				tempMinuteInteger=0;
+			}
+			
+			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
+				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
+			}else if (tempMinuteInteger < 10) {
+				hour_minute_View.setText(tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString());
+			}else if( tempHourInteger < 10){
+				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString());
+			}else {
+				hour_minute_View.setText(tempHourInteger.toString()+":"+ tempMinuteInteger.toString());
+			}
 		}
 
 		@Override

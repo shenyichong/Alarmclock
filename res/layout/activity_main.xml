@@ -18,12 +18,15 @@
 		   	android:layout_height="wrap_content"
 		   	android:layout_weight="1"
 		    android:textSize="15sp"
+		    android:layout_gravity="center"
 		    android:text="@string/ringhour" />
 
 	    <SeekBar
 	        android:id="@+id/seekBar1"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="wrap_content" 
+	        android:layout_marginRight="30dp"
+	        android:layout_marginLeft="20dp"/>
     	
     </LinearLayout>
     
@@ -32,6 +35,7 @@
 	    android:id="@+id/linear2"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:layout_marginTop="10dp"
 	    android:orientation="horizontal"
 	    >
 	    <TextView
@@ -40,12 +44,15 @@
 		   	android:layout_height="wrap_content"
 		   	android:layout_weight="1"
 		    android:textSize="15sp"
+		    android:layout_gravity="center"
 		    android:text="@string/ringminute" />
 	    
 	    <SeekBar
 	        android:id="@+id/seekBar2"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="30dp"
+	        android:layout_marginLeft="20dp" />
 	    
 	</LinearLayout>
 		
