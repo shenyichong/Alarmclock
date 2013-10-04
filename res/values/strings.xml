@@ -3,8 +3,9 @@
 
     <string name="app_name">我的闹钟</string>
     <string name="action_settings">闹钟设置</string>
-    <string name="ringhour">设置小时</string>
-    <string name="ringminute">设置分钟</string>
+    <string name="ringhour">小时</string>
+    <string name="ringminute">分钟</string>
+    <string name="showhourminute">00:00</string>
     <string name="ringtime_blank">填写时间</string>
 	<string name="setting_time">设置时间</string>
 	<string name="ringcontent">闹钟名称</string>

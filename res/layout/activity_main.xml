@@ -48,9 +48,31 @@
 	        android:layout_height="wrap_content" />
 	    
 	</LinearLayout>
+		
+	    
 	<LinearLayout
-	    android:layout_below="@id/linear2"
+		android:layout_below="@id/linear2"
 	    android:id="@+id/linear3"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+	    <TextView
+	    	android:id="@+id/ringHourMinuteShow"
+	    	android:text="@string/showhourminute"
+	    	android:gravity="center"
+	    	android:layout_width="0dp"
+	    	android:layout_weight="1"
+	    	android:layout_height="wrap_content"
+	    	android:textSize="50sp"
+	    	/>
+	    	
+		    
+	</LinearLayout>
+	    
+	<LinearLayout
+	    android:layout_below="@id/linear3"
+	    android:id="@+id/linear4"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
@@ -73,8 +95,8 @@
 	</LinearLayout>
 	
 	<LinearLayout
-	    android:layout_below="@id/linear3"
-	    android:id="@+id/linear4"
+	    android:layout_below="@id/linear4"
+	    android:id="@+id/linear5"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal">
@@ -106,8 +128,8 @@
 	</LinearLayout>
 	
 	<LinearLayout
-		android:layout_below="@id/linear4"
-	    android:id="@+id/linear5"
+		android:layout_below="@id/linear5"
+	    android:id="@+id/linear6"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal">

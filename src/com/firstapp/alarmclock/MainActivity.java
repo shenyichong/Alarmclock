@@ -1,6 +1,10 @@
 package com.firstapp.alarmclock;
 
 import java.util.Calendar;
+
+import javax.xml.transform.Templates;
+
+import android.R.integer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,9 +27,9 @@ public class MainActivity extends Activity {
 	
 	private static final String STATE_HOUR = "HOUR";
 	private static final String STATE_MINUTE = "MINUTE";
-	private static final String STATE_YEAR = "YEAR";
+	/*private static final String STATE_YEAR = "YEAR";
 	private static final String STATE_MONTH = "MONTH";
-	private static final String STATE_DAY = "DAY";
+	private static final String STATE_DAY = "DAY";*/
 	private static final String STATE_URI = "URI";
 	private static final String PREFS_NAME="SETTINGS";
 	private static final String STATE_MUSIC = "MUSIC";
@@ -34,7 +38,7 @@ public class MainActivity extends Activity {
 //	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
 	
-	 
+	
 	static String ringtone_name;
 	static int Hour;
 	static int Minute;
@@ -95,9 +99,17 @@ public class MainActivity extends Activity {
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
 			// TODO Auto-generated method stub
-			Hour=progress/100*60;
-			TextView hourView = (TextView)findViewById(R.id.ringHour);
-			hourView.setText(toString(Hour));
+			if (fromUser) {
+				Float progressfFloat = (float) progress;
+				progressfFloat = progressfFloat/100 * 24;
+				Hour = progressfFloat.intValue();
+			}
+		
+			//change the indicator once the thumb moves.
+			TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
+			Integer tempHourInteger = Hour;
+			Integer tempMinuteInteger = Minute;
+			hour_minute_View.setText(tempHourInteger.toString()+":"+tempMinuteInteger.toString());
 		}
 
 		@Override
@@ -119,9 +131,21 @@ public class MainActivity extends Activity {
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
 			// TODO Auto-generated method stub
-			Minute=progress/100*60;	
-			TextView MinuteView = (TextView)findViewById(R.id.ringMinute);
-			MinuteView.setText(Minute);
+			Float progressfFloat = (float) progress;
+			progressfFloat = progressfFloat/100 * 60;
+			Minute = progressfFloat.intValue();
+			
+			//set the effect that the hour seekbar will move when the minute seekbar moves
+			Integer tempHourInteger = Hour;Integer tempMinuteInteger = Minute;
+			SeekBar HourSet = (SeekBar)findViewById(R.id.seekBar1); 
+			Float progressFloat=progressfFloat/60/24*100;
+			Float progressShowFloat = ((float)tempHourInteger)/24*100 ;
+			HourSet.setProgress(progressShowFloat.intValue()+progressFloat.intValue());
+			
+			//change the indicator once the thumb moves.
+			
+			TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
+			hour_minute_View.setText(tempHourInteger.toString()+":"+tempMinuteInteger.toString());
 		}
 
 		@Override
@@ -154,9 +178,7 @@ public class MainActivity extends Activity {
 					Hour=0;
 				}
 			}
-			Year = c.get(Calendar.YEAR);
-			Month = c.get(Calendar.MONTH);
-			Day = c.get(Calendar.DAY_OF_MONTH);
+			
 			ringtone_Uri=Uri.parse("content://settings/system/ringtone");
 			music_name=getResources().getString(R.string.defaultRing);
 			buttonOn=false;
@@ -165,29 +187,41 @@ public class MainActivity extends Activity {
 		else{
 			Hour =settings.getInt(STATE_HOUR,0);
 		    Minute = settings.getInt(STATE_MINUTE,0);
-		    Year = settings.getInt(STATE_YEAR,0);
-		    Month = settings.getInt(STATE_MONTH,0);
-		    Day = settings.getInt(STATE_DAY,0);
 		    ringtone_Uri = Uri.parse(settings.getString(STATE_URI, "content://settings/system/ringtone"));
 		    music_name=settings.getString(STATE_MUSIC, getResources().getString(R.string.defaultRing));
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
 		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);   
 		}
-//		//setup TimePicker
-//		TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker);
-//		timePicker.setIs24HourView(true);
+		final Calendar c = Calendar.getInstance();
+		Year = c.get(Calendar.YEAR);
+		Month = c.get(Calendar.MONTH);
+		Day = c.get(Calendar.DAY_OF_MONTH);
 		
+		//set TextView to indicate the value of Hour and Minute.
+		TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
+		Integer tempHourInteger = Hour;
+		Integer tempMinuteInteger = Minute;
+		hour_minute_View.setText(tempHourInteger.toString()+":"+tempMinuteInteger.toString());
+		
+		//register the listener of seekbars.
 		SeekBar HourSet = (SeekBar)findViewById(R.id.seekBar1); 
+		Float temphourfFloat = (float) Hour;
+		temphourfFloat = temphourfFloat/24*100;
+		HourSet.setProgress(temphourfFloat.intValue());
+		
 		SeekBar MinuteSet = (SeekBar)findViewById(R.id.seekBar2);
+		Float tempminuteFloat = (float) Minute;
+		tempminuteFloat = tempminuteFloat/60*100;
+		MinuteSet.setProgress(tempminuteFloat.intValue());
+		
+		
 		HourSet.setOnSeekBarChangeListener(mSeekBarChangeListener1);
 		MinuteSet.setOnSeekBarChangeListener(mSeekBarChangeListener2);
 		
 		TextView ringname=(TextView)this.findViewById(R.id.ringname);
 		ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
 		ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
-//		timePicker.setCurrentHour(Hour);
-//	    timePicker.setCurrentMinute(Minute);
-//	    timePicker.setOnTimeChangedListener(mStartTimeChangedListener);
+
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
@@ -215,9 +249,9 @@ public class MainActivity extends Activity {
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putInt(STATE_HOUR, Hour);
 	    editor.putInt(STATE_MINUTE, Minute);
-	    editor.putInt(STATE_YEAR, Year);
+	    /*editor.putInt(STATE_YEAR, Year);
 	    editor.putInt(STATE_MONTH, Month);
-	    editor.putInt(STATE_DAY, Day);
+	    editor.putInt(STATE_DAY, Day);*/
 	    editor.putString(STATE_URI, ringtone_Uri.toString());
 	    editor.putString(STATE_MUSIC, music_name);
 	    ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
@@ -245,6 +279,7 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
 		
+		this.setRing(this.findViewById(R.id.Ring_set));
 	}	
 	
 	
