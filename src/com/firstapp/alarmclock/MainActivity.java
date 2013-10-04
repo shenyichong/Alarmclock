@@ -115,7 +115,6 @@ public class MainActivity extends Activity {
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
