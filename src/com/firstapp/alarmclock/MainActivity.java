@@ -63,6 +63,13 @@ public class MainActivity extends Activity {
 			TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
 			Integer tempHourInteger = Hour;
 			Integer tempMinuteInteger = Minute;
+			SeekBar HourSet = (SeekBar)findViewById(R.id.seekBar1); 
+			
+			if (tempHourInteger==24) {
+				tempHourInteger=0;
+				HourSet.setProgress(0);
+			}
+			
 			if (tempHourInteger==24) {
 				tempHourInteger=0;
 			}
@@ -106,18 +113,23 @@ public class MainActivity extends Activity {
 			//set the effect that the hour seekbar will move when the minute seekbar moves
 			Integer tempHourInteger = Hour;Integer tempMinuteInteger = Minute;
 			SeekBar HourSet = (SeekBar)findViewById(R.id.seekBar1); 
+			SeekBar MinuteSet =  (SeekBar)findViewById(R.id.seekBar2); 
 			Float progressFloat=progressfFloat/60/24*100;
 			Float progressShowFloat = ((float)tempHourInteger)/24*100 ;
 			HourSet.setProgress(progressShowFloat.intValue()+progressFloat.intValue());
 			
 			//change the indicator once the thumb moves.
 			TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
-			if (tempHourInteger==24) {
-				tempHourInteger=0;
-			}
+			
 			if (tempMinuteInteger==60) {
 				tempMinuteInteger=0;
+				Hour = Hour+1;
+				if (Hour > 23) {
+					Hour=0;
+				}
+				MinuteSet.setProgress(0);
 			}
+
 			
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
 				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
