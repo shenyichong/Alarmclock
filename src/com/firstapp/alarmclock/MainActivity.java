@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 //	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
 	
-	
+	static int hourIntoflag = 0;
 	static String ringtone_name;
 	static int Hour;
 	static int Minute;
@@ -123,14 +123,16 @@ public class MainActivity extends Activity {
 			
 			if (tempMinuteInteger==60) {
 				tempMinuteInteger=0;
-				Hour = Hour+1;
-				if (Hour > 23) {
-					Hour=0;
+				if (hourIntoflag == 0) {
+					Hour = Hour+1;
+					hourIntoflag = hourIntoflag+1;
+					if (Hour > 23) {
+						Hour=0;
+					}
 				}
 				MinuteSet.setProgress(0);
 			}
 
-			
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
 				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
 			}else if (tempMinuteInteger < 10) {
@@ -151,7 +153,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
-			
+			hourIntoflag=0;
 		}
 	};
 	
