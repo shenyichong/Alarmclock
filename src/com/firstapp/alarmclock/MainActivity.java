@@ -262,9 +262,6 @@ public class MainActivity extends Activity {
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putInt(STATE_HOUR, Hour);
 	    editor.putInt(STATE_MINUTE, Minute);
-	    /*editor.putInt(STATE_YEAR, Year);
-	    editor.putInt(STATE_MONTH, Month);
-	    editor.putInt(STATE_DAY, Day);*/
 	    editor.putString(STATE_URI, ringtone_Uri.toString());
 	    editor.putString(STATE_MUSIC, music_name);
 	    ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
