@@ -1,17 +1,22 @@
 package com.firstapp.alarmclock;
 
 import java.util.Calendar;
+
+
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 //import android.widget.TimePicker;
@@ -23,9 +28,6 @@ public class MainActivity extends Activity {
 	
 	private static final String STATE_HOUR = "HOUR";
 	private static final String STATE_MINUTE = "MINUTE";
-	/*private static final String STATE_YEAR = "YEAR";
-	private static final String STATE_MONTH = "MONTH";
-	private static final String STATE_DAY = "DAY";*/
 	private static final String STATE_URI = "URI";
 	private static final String PREFS_NAME="SETTINGS";
 	private static final String STATE_MUSIC = "MUSIC";
@@ -33,6 +35,7 @@ public class MainActivity extends Activity {
 	private static final String STATE_VIBRATE= "VIBRATE";
 //	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
+	private static final String ALARM_NAME = "NAME";
 	
 	static int hourIntoflag = 0;
 	static String ringtone_name;
@@ -45,6 +48,7 @@ public class MainActivity extends Activity {
 	static String music_name;
 	static boolean buttonOn;
 	static boolean buttonVibrate;
+	static String alarm_name;
 	
 	
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
@@ -179,6 +183,7 @@ public class MainActivity extends Activity {
 			music_name=getResources().getString(R.string.defaultRing);
 			buttonOn=false;
 			buttonVibrate=false;
+			alarm_name=getResources().getString(R.string.ringcontent_blank);
 		}
 		else{
 			Hour =settings.getInt(STATE_HOUR,0);
@@ -186,7 +191,8 @@ public class MainActivity extends Activity {
 		    ringtone_Uri = Uri.parse(settings.getString(STATE_URI, "content://settings/system/ringtone"));
 		    music_name=settings.getString(STATE_MUSIC, getResources().getString(R.string.defaultRing));
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
-		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);   
+		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);
+		    alarm_name=settings.getString(ALARM_NAME,getResources().getString(R.string.ringcontent_blank));
 		}
 		final Calendar c = Calendar.getInstance();
 		Year = c.get(Calendar.YEAR);
@@ -197,7 +203,15 @@ public class MainActivity extends Activity {
 		TextView hour_minute_View = (TextView)findViewById(R.id.ringHourMinuteShow);
 		Integer tempHourInteger = Hour;
 		Integer tempMinuteInteger = Minute;
-		hour_minute_View.setText(tempHourInteger.toString()+":"+tempMinuteInteger.toString());
+		if (tempHourInteger < 10 && tempMinuteInteger < 10) {
+			hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
+		}else if (tempMinuteInteger < 10) {
+			hour_minute_View.setText(tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString());
+		}else if( tempHourInteger < 10){
+			hour_minute_View.setText("0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString());
+		}else {
+			hour_minute_View.setText(tempHourInteger.toString()+":"+ tempMinuteInteger.toString());
+		}
 		
 		//register the listener of seekbars.
 		SeekBar HourSet = (SeekBar)findViewById(R.id.seekBar1); 
@@ -214,10 +228,14 @@ public class MainActivity extends Activity {
 		HourSet.setOnSeekBarChangeListener(mSeekBarChangeListener1);
 		MinuteSet.setOnSeekBarChangeListener(mSeekBarChangeListener2);
 		
+		//set the alarm name
+		TextView alarmNameView = (TextView)findViewById(R.id.ringcontent_blank);
+		alarmNameView.setText(alarm_name);
+		
 		TextView ringname=(TextView)this.findViewById(R.id.ringname);
 		ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
 		ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
-
+		
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
@@ -252,6 +270,8 @@ public class MainActivity extends Activity {
 	    editor.putString(STATE_MUSIC, music_name);
 	    ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
 	    ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
+	    TextView alarmNameView = (TextView)findViewById(R.id.ringcontent_blank);
+	    editor.putString(ALARM_NAME, alarmNameView.getText().toString());
 	    editor.putBoolean(STATE_BUTTON, buttonflag.isChecked());
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
@@ -262,21 +282,30 @@ public class MainActivity extends Activity {
 		Calendar setTime = Calendar.getInstance(); 
 		setTime.set(Year, Month, Day, Hour, Minute,0); 
 		long set=setTime.getTimeInMillis();
+		if (now>set) {
+			setTime.set(Year, Month, Day+1, Hour, Minute,0); 
+			set=setTime.getTimeInMillis();
+		}
 		int hoursLeft=(int)Math.floor((set-now)/1000/3600);
 		long mod=(set-now)%(1000*3600);
 		int minutesLeft=(int)Math.floor(mod/1000/60);
-		if (minutesLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
+		if (minutesLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked()){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
-		else if (hoursLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
+		else if (hoursLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked()){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
-		else if(((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked() && now<set){
+		else if(((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked()){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
 		
 		this.setRing(this.findViewById(R.id.Ring_set));
 	}	
+	
+	public void fillinName(View view){
+		DialogFragment newFragment = new clockNameDialog();
+	    newFragment.show(getFragmentManager(), "Alarm_Name"); 
+	}
 	
 	
 	/*select ring*/
@@ -337,11 +366,18 @@ public class MainActivity extends Activity {
 		boolean setORnot=(now < set);
 		Intent toService = new Intent(this,AlarmService.class);
 		
-		if (on && setORnot) {
-		    // turn on the alarm 
-			toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
-			this.startService(toService);
-		} else {
+		if (on) {
+			if (setORnot) {
+				 // turn on the alarm 
+				toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
+				this.startService(toService);
+			}else {
+				setTime.set(Year, Month, Day+1, Hour, Minute,0); 
+				toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
+				this.startService(toService);
+			}
+		}
+		else {
 	        // turn off the alarm
 	    	this.stopService(toService);
 		}

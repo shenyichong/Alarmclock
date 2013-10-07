@@ -63,6 +63,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
+	    android:layout_marginBottom="20dp"
 	    >
 	    <TextView
 	    	android:id="@+id/ringHourMinuteShow"
@@ -83,21 +84,26 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
+	    android:layout_marginBottom="10dp"
 	    >
+
 	    <TextView
-    	    android:id="@+id/ringcontent"
-    	    android:layout_width="0dp"
-		   	android:layout_height="wrap_content"
-		   	android:layout_weight="1"
-		    android:textSize="15sp"
-		    android:text="@string/ringcontent" />
-	    <EditText
-	        android:id="@+id/ringcontent_blank"
-	       	android:textSize="15sp"
-	        android:layout_width="0dp"
+	        android:id="@+id/ringcontent"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:hint="@string/ringcontent" />
+	        android:text="@string/ringcontent"
+	        android:textSize="15sp" />
+
+	    <TextView
+	        android:id="@+id/ringcontent_blank"
+	       	android:layout_width="0dp"
+	       	android:layout_height="wrap_content"
+	       	android:layout_weight="1"
+	       	android:textSize="18sp"
+	        android:hint="@string/ringcontent_blank"
+	        android:clickable="true"
+	        android:gravity="center"
+	        android:onClick="fillinName" />
 	    
 	</LinearLayout>
 	
@@ -120,8 +126,7 @@
 		   	android:layout_height="wrap_content"
 		   	android:layout_weight="1"
 		    android:textSize="15sp"
-		    android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
+			android:gravity="center"
 	        android:textIsSelectable="true"
 		    android:hint="@string/ringname" />
 	    <Button
