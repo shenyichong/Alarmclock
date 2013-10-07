@@ -224,7 +224,6 @@ public class MainActivity extends Activity {
 		tempminuteFloat = tempminuteFloat/60*100;
 		MinuteSet.setProgress(tempminuteFloat.intValue());
 		
-		
 		HourSet.setOnSeekBarChangeListener(mSeekBarChangeListener1);
 		MinuteSet.setOnSeekBarChangeListener(mSeekBarChangeListener2);
 		
