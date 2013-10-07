@@ -6,7 +6,8 @@
 .project
 .metadata
 bin/
-!bin/*.apk
+!/bin/*.apk
+!*.apk
 tmp/
 BuildConfig.java
 project.properties
