@@ -39,6 +39,7 @@ public class clockNameDialog extends DialogFragment{
 		
 		final View clockNameDialogView = inflater.inflate(R.layout.dialog_alarm_name, null);
 		final EditText nameAlarmText = (EditText) clockNameDialogView.findViewById(R.id.alarm_name);
+		nameAlarmText.setText(MainActivity.alarm_name);
 		
 		nameBuilder.setView(clockNameDialogView);
 		nameBuilder.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
@@ -60,6 +61,7 @@ public class clockNameDialog extends DialogFragment{
 	
 	public void onDestroyView (){
 		TextView v = (TextView)getActivity().findViewById(R.id.ringcontent_blank);
+		MainActivity.alarm_name=alarmName;
 		v.setText(alarmName);
 		
 		super.onDestroyView();
