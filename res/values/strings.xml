@@ -8,8 +8,6 @@
     <string name="showhourminute">00:00</string>
     <string name="ringtime_blank">填写时间</string>
 	<string name="setting_time">设置时间</string>
-	<string name="ringcontent">闹钟名称</string>
-	<string name="ringcontent_blank">输入闹钟名称</string>
 	<string name="ringselect">选择铃声</string>
 	<string name="ringselectTitle">请选择铃声:</string>
 	<string name="button_ringselect">铃声选择</string>
@@ -28,6 +26,8 @@
 	<string name="notificationText5">分后响起</string>
 	<string name="notificationText6">从现在起不到一分钟</string>
 	<string name="notify_button">关闭闹钟</string>
+	<string name="ringcontent">闹钟名称</string>
+	<string name="ringcontent_blank">输入闹钟名称</string>
 	
 	<string name="dialog_title">输入闹钟名称</string>
 	<string name="alarm_name">午睡闹钟</string>
