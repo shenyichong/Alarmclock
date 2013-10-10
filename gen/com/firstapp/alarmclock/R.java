@@ -39,21 +39,21 @@ public final class R {
         public static final int clock_name_dialog=0x7f080017;
         public static final int image_Alarm=0x7f080015;
         public static final int linear1=0x7f080000;
-        public static final int linear2=0x7f080003;
-        public static final int linear3=0x7f080006;
+        public static final int linear2=0x7f080002;
+        public static final int linear3=0x7f080005;
         public static final int linear4=0x7f080008;
         public static final int linear5=0x7f08000b;
         public static final int linear6=0x7f08000f;
-        public static final int ringHour=0x7f080001;
-        public static final int ringHourMinuteShow=0x7f080007;
-        public static final int ringMinute=0x7f080004;
+        public static final int ringHour=0x7f080003;
+        public static final int ringHourMinuteShow=0x7f080001;
+        public static final int ringMinute=0x7f080006;
         public static final int ringcontent=0x7f080009;
         public static final int ringcontent_blank=0x7f08000a;
         public static final int ringing=0x7f080014;
         public static final int ringname=0x7f08000d;
         public static final int ringselect=0x7f08000c;
-        public static final int seekBar1=0x7f080002;
-        public static final int seekBar2=0x7f080005;
+        public static final int seekBar1=0x7f080004;
+        public static final int seekBar2=0x7f080007;
         public static final int title_name=0x7f080018;
     }
     public static final class layout {

@@ -63,7 +63,6 @@ public class clockNameDialog extends DialogFragment{
 		TextView v = (TextView)getActivity().findViewById(R.id.ringcontent_blank);
 		MainActivity.alarm_name=alarmName;
 		v.setText(alarmName);
-		
 		super.onDestroyView();
 	}
 	

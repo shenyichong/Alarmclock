@@ -93,7 +93,6 @@ public class ringActivity extends Activity{
 			
 			/*wl.release();  */ 
 		}
-		
 	}
 	
 	@Override
