@@ -2,6 +2,8 @@ package com.firstapp.alarmclock;
 
 import java.util.Calendar;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -26,6 +28,8 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 	
+	private SlidingMenu slidingmenu;
+	
 	private static final String STATE_HOUR = "HOUR";
 	private static final String STATE_MINUTE = "MINUTE";
 	private static final String STATE_URI = "URI";
@@ -33,7 +37,6 @@ public class MainActivity extends Activity {
 	private static final String STATE_MUSIC = "MUSIC";
 	private static final String STATE_BUTTON = "BUTTON";
 	private static final String STATE_VIBRATE= "VIBRATE";
-//	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
 	private static final String ALARM_NAME = "NAME";
 	
@@ -162,11 +165,30 @@ public class MainActivity extends Activity {
 	};
 	
 	
+   private void initSlidingMenu() {  
+        // 设置主界面视图  
+        //setContentView(R.layout.content_frame);  
+        //getFragmentManager().beginTransaction().replace(R.id.content_frame, new SampleListFragment()).commit();  
+	   
+        // 设置滑动菜单的属性值  
+        slidingmenu = new SlidingMenu(this);  
+        slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);  
+        slidingmenu.setShadowWidthRes(R.dimen.shadow_width);  
+        slidingmenu.setShadowDrawable(R.layout.shadow);  
+        slidingmenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
+        slidingmenu.setFadeDegree(0.35f);  
+        slidingmenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
+        // 设置滑动菜单的视图界面  
+           
+        getFragmentManager().beginTransaction().replace(R.id.menu_frame, new SampleListFragment()).commit();  
+        slidingmenu.setMenu(R.layout.menu_frame); 
+    } 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+        
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
 		if(settings.getString(STATE_MUSIC, null) == null){
 			final Calendar c = Calendar.getInstance();
@@ -238,15 +260,18 @@ public class MainActivity extends Activity {
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
+		
+		//初始化滑动菜单  initialize the SlidingMenu menu
+        initSlidingMenu();  
 	}
 
+	//@Override
+	//public void onResume(){
+	//	super.onResume();
+	//	//Set AlarmClock
+	////	this.setRing(this.findViewById(R.id.Ring_set));
+	//}
 	
-	@Override
-	public void onResume(){
-		super.onResume();
-		//Set AlarmClock
-	//	this.setRing(this.findViewById(R.id.Ring_set));
-	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
