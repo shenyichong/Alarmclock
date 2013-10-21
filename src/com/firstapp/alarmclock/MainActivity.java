@@ -179,9 +179,8 @@ public class MainActivity extends Activity {
         slidingmenu.setFadeDegree(0.35f);  
         slidingmenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
         // 设置滑动菜单的视图界面  
-           
+        slidingmenu.setMenu(R.layout.menu_frame);     
         getFragmentManager().beginTransaction().replace(R.id.menu_frame, new SampleListFragment()).commit();  
-        slidingmenu.setMenu(R.layout.menu_frame); 
     } 
 	
 	@Override

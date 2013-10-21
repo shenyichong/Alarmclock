@@ -47,8 +47,8 @@ public class SampleListFragment extends ListFragment{
 	public void onActivityCreated(Bundle savedInstanceState) {  
         super.onActivityCreated(savedInstanceState);  
         SampleAdapter adapter = new SampleAdapter(getActivity());  
-        for (int i = 0; i < 20; i++) {  
-            adapter.add(new SampleItem("Sample List", R.drawable.notify_button));  
+        for (int i = 0; i < 3; i++) {  
+            adapter.add(new SampleItem("Alarm List", R.drawable.notify_button));  
         }  
         setListAdapter(adapter);  
     } 
