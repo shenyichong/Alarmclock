@@ -10,7 +10,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class SampleListFragment extends ListFragment{
+public class SampleListFragment extends ListFragment{ 
+	
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
+        return inflater.inflate(R.layout.list, null);  
+    }  
+	public void onActivityCreated(Bundle savedInstanceState) {  
+        super.onActivityCreated(savedInstanceState);  
+        SampleAdapter adapter = new SampleAdapter(getActivity());  
+        for (int i = 0; i < 3; i++) {  
+            adapter.add(new SampleItem("Alarm List", R.drawable.notify_button));  
+        }  
+        setListAdapter(adapter);  
+    } 
 	
 	private class SampleItem {  
         public String tag;  
@@ -39,19 +51,5 @@ public class SampleListFragment extends ListFragment{
             return convertView;  
         }  
   
-    }  
-	
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
-        return inflater.inflate(R.layout.list, null);  
-    }  
-	public void onActivityCreated(Bundle savedInstanceState) {  
-        super.onActivityCreated(savedInstanceState);  
-        SampleAdapter adapter = new SampleAdapter(getActivity());  
-        for (int i = 0; i < 3; i++) {  
-            adapter.add(new SampleItem("Alarm List", R.drawable.notify_button));  
-        }  
-        setListAdapter(adapter);  
     } 
-	
-	
 }
