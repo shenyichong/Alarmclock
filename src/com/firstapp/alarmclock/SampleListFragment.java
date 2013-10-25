@@ -2,6 +2,11 @@ package com.firstapp.alarmclock;
 
 import java.util.ArrayList;
 
+import com.firstapp.alarmclock.R;
+import com.firstapp.alarmclock.R.drawable;
+import com.firstapp.alarmclock.R.id;
+import com.firstapp.alarmclock.R.layout;
+
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;

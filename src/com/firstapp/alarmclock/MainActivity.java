@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-//import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -228,9 +227,9 @@ public class MainActivity extends Activity {
 		TextView alarmNameView = (TextView)findViewById(R.id.ringcontent_blank);
 		alarmNameView.setText(alarm_name);
 		
-		TextView ringname=(TextView)this.findViewById(R.id.ringname);
-		ToggleButton buttonflag=(ToggleButton)this.findViewById(R.id.Ring_set);
-		ToggleButton buttonVflag=(ToggleButton)this.findViewById(R.id.Vibrate_set);
+		TextView ringname=(TextView)findViewById(R.id.ringname);
+		ToggleButton buttonflag=(ToggleButton)findViewById(R.id.Ring_set);
+		ToggleButton buttonVflag=(ToggleButton)findViewById(R.id.Vibrate_set);
 		
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
