@@ -3,8 +3,6 @@ package com.firstapp.alarmclock;
 import java.util.Calendar;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
-
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,13 +10,11 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 //import android.widget.TimePicker;
@@ -154,7 +150,6 @@ public class MainActivity extends Activity {
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
@@ -241,16 +236,16 @@ public class MainActivity extends Activity {
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
 		
-		//初始化滑动菜单  initialize the SlidingMenu menu
+		//initialize the SlidingMenu menu
         initSlidingMenu();  
 	}
 	 
 	private void initSlidingMenu() {  
-        // 设置主界面视图  
+        //setting up the main content View
         //setContentView(R.layout.content_frame);  
         //getFragmentManager().beginTransaction().replace(R.id.content_frame, new SampleListFragment()).commit(); 
 	
-        // 设置滑动菜单的属性值  
+        //setting up the distribute of sliding menu 
         slidingmenu = new SlidingMenu(this);  
         slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);  
         slidingmenu.setShadowWidthRes(R.dimen.shadow_width);  
@@ -258,13 +253,20 @@ public class MainActivity extends Activity {
         slidingmenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
         slidingmenu.setFadeDegree(0.35f);  
         slidingmenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
-        // 设置滑动菜单的视图界面  
+        
+        //initialize the content of the sliding menu
+        SampleListFragment samplist = new SampleListFragment();
+        samplist.ListNum=3;
+        for (int i = 0; i < samplist.ListNum; i++) {
+        	samplist.AlarmNames.add("00:00");
+		}
+        //setting up the sliding menu's view  
         slidingmenu.setMenu(R.layout.menu_frame);     
-        getFragmentManager().beginTransaction().replace(R.id.menu_frame, new SampleListFragment()).commit();  
+        getFragmentManager().beginTransaction().replace(R.id.menu_frame,samplist).commit();  
     } 
 	@Override  
 	public void onBackPressed() {  
-       //点击返回键关闭滑动菜单  
+       // click return key to return the sliding menu
        if (slidingmenu.isMenuShowing()) {  
     	   slidingmenu.showContent();  
        } else {  
@@ -272,14 +274,12 @@ public class MainActivity extends Activity {
        }  
 	} 
 	
-	
 	//@Override
 	//public void onResume(){
 	//	super.onResume();
 	//	//Set AlarmClock
 	////	this.setRing(this.findViewById(R.id.Ring_set));
 	//}
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

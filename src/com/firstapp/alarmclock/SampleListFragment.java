@@ -1,28 +1,61 @@
 package com.firstapp.alarmclock;
 
+import java.util.ArrayList;
+
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class SampleListFragment extends ListFragment{ 
 	
+	public int ListNum;
+	public ArrayList<String> AlarmNames = new ArrayList<String>();
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
-        return inflater.inflate(R.layout.list, null);  
+        return inflater.inflate(R.layout.list, null); 
     }  
 	public void onActivityCreated(Bundle savedInstanceState) {  
         super.onActivityCreated(savedInstanceState);  
         SampleAdapter adapter = new SampleAdapter(getActivity());  
-        for (int i = 0; i < 3; i++) {  
-            adapter.add(new SampleItem("Alarm List", R.drawable.notify_button));  
+        for (int i = 0; i < ListNum; i++) { 
+            adapter.add(new SampleItem(AlarmNames.get(i), R.drawable.notify_button));  
         }  
-        setListAdapter(adapter);  
-    } 
+        setListAdapter(adapter); 
+    }
+	
+	@Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+		int t ;
+		Intent i = new Intent();
+		switch (position) {
+		case 0:
+			t = position;
+			i.setClass(getActivity(), MainActivity.class);
+			startActivity(i);
+			break;
+		case 1:
+			t = position;
+			i.setClass(getActivity(), MainActivity.class);
+			startActivity(i);
+			break;
+		case 2:
+			t = position;
+			i.setClass(getActivity(), MainActivity.class);
+			startActivity(i);
+			break;
+		default:
+			t = 0;
+			break;
+		}
+	}
 	
 	private class SampleItem {  
         public String tag;  
@@ -47,9 +80,8 @@ public class SampleListFragment extends ListFragment{
             icon.setImageResource(getItem(position).iconRes);  
             TextView title = (TextView) convertView.findViewById(R.id.row_title);  
             title.setText(getItem(position).tag);  
-  
+            
             return convertView;  
-        }  
-  
+        } 
     } 
 }
