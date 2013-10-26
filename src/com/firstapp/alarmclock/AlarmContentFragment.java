@@ -4,7 +4,9 @@ import java.util.Calendar;
 
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -16,13 +18,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class AlarmContentFragment extends Fragment{
 	
 	public static final String TIMETOSEND = "TIME";
+
+	private static final String STATE_HOUR = "HOUR";
+
+	private static final String STATE_MUSIC = "MUSIC";
+
+	private static final String STATE_MINUTE = "MINUTE";
+
+	private static final String STATE_URI = "URI";
+
+	private static final String STATE_BUTTON = "BUTTON";
+
+	private static final String STATE_VIBRATE = "VIBRATE";
+
+	private static final String ALARM_NAME = "NAME";
 	
 	int contentFragNum;
+	String preferencesNameString;
 	
 	int hourIntoflag;
 	String ringtone_name;
@@ -46,8 +64,42 @@ public class AlarmContentFragment extends Fragment{
 	
 	public void onActivityCreated(Bundle savedInstanceState) {  
         super.onActivityCreated(savedInstanceState);  
+       
         //initialize the layouts for this fragment 
-      
+        contentFragNum=MainActivity.cur_menu_number;
+        preferencesNameString = "Pref_"+String.valueOf(contentFragNum);
+        SharedPreferences settings = getActivity().getSharedPreferences(preferencesNameString,Context.MODE_PRIVATE);
+		if(settings.getString(STATE_MUSIC, null) == null){
+			final Calendar c = Calendar.getInstance();
+			Hour = c.get(Calendar.HOUR_OF_DAY);
+			Minute = c.get(Calendar.MINUTE)+1;
+			if (Minute >= 60) {
+				Hour++; Minute-=60;
+				if (Hour >= 24){
+					Hour=0;
+				}
+			}
+			
+			ringtone_Uri=Uri.parse("content://settings/system/ringtone");
+			music_name=getResources().getString(R.string.defaultRing);
+			buttonOn=false;
+			buttonVibrate=false;
+			alarm_name=getResources().getString(R.string.ringcontent_blank);
+		}
+		else{
+			Hour =settings.getInt(STATE_HOUR,0);
+		    Minute = settings.getInt(STATE_MINUTE,0);
+		    ringtone_Uri = Uri.parse(settings.getString(STATE_URI, "content://settings/system/ringtone"));
+		    music_name=settings.getString(STATE_MUSIC, getResources().getString(R.string.defaultRing));
+		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
+		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);
+		    alarm_name=settings.getString(alarm_name,getResources().getString(R.string.ringcontent_blank));
+		}
+		final Calendar c = Calendar.getInstance();
+		Year = c.get(Calendar.YEAR);
+		Month = c.get(Calendar.MONTH);
+		Day = c.get(Calendar.DAY_OF_MONTH);
+        
         
         //set TextView to indicate the value of Hour and Minute.
   		TextView hour_minute_View = (TextView)getActivity().findViewById(R.id.ringHourMinuteShow);
@@ -146,7 +198,44 @@ public class AlarmContentFragment extends Fragment{
 		// need to test the sequence of Activity's onStop and this onStop
 		super.onStop();
 		//store data in the class AppData
-		
+		preferencesNameString = "Pref_"+String.valueOf(contentFragNum);
+        SharedPreferences settings = getActivity().getSharedPreferences(preferencesNameString,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(STATE_HOUR, Hour);
+	    editor.putInt(STATE_MINUTE, Minute);
+	    editor.putString(STATE_URI, ringtone_Uri.toString());
+	    editor.putString(STATE_MUSIC, music_name);
+	    ToggleButton buttonflag=(ToggleButton)getActivity().findViewById(R.id.Ring_set);
+	    ToggleButton buttonVflag=(ToggleButton)getActivity().findViewById(R.id.Vibrate_set);
+	    TextView alarmNameView = (TextView)getActivity().findViewById(R.id.ringcontent_blank);
+	    editor.putString(ALARM_NAME, alarmNameView.getText().toString());
+	    editor.putBoolean(STATE_BUTTON, buttonflag.isChecked());
+	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
+	    editor.commit();
+	    
+	    //show how long will take before the alarm goes off.
+	    Calendar c= Calendar.getInstance();
+		long now=c.getTimeInMillis();
+		Calendar setTime = Calendar.getInstance(); 
+		setTime.set(Year, Month, Day, Hour, Minute,0); 
+		long set=setTime.getTimeInMillis();
+		if (now>set) {
+			setTime.set(Year, Month, Day+1, Hour, Minute,0); 
+			set=setTime.getTimeInMillis();
+		}
+		int hoursLeft=(int)Math.floor((set-now)/1000/3600);
+		long mod=(set-now)%(1000*3600);
+		int minutesLeft=(int)Math.floor(mod/1000/60);
+		if (minutesLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
+			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+		}
+		else if (hoursLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
+			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+		}
+		else if(((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
+			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+		}
+		//set the Alarm.
 		setRing(getActivity().findViewById(R.id.Ring_set));
 	}
 	

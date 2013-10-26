@@ -38,28 +38,13 @@ public class SampleListFragment extends ListFragment{
 	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id){
-		int t ;
-		Intent i = new Intent();
-		switch (position) {
-		case 0:
-			t = position;
-			i.setClass(getActivity(), MainActivity.class);
-			startActivity(i);
-			break;
-		case 1:
-			t = position;
-			i.setClass(getActivity(), MainActivity.class);
-			startActivity(i);
-			break;
-		case 2:
-			t = position;
-			i.setClass(getActivity(), MainActivity.class);
-			startActivity(i);
-			break;
-		default:
-			t = 0;
-			break;
-		}
+		
+		MainActivity.cur_menu_number = position+1;
+		// Implement an interface to interact with MainActivity.
+		
+		/* Intent i = new Intent();
+		i.setClass(getActivity(), AlarmContentFragment.class);
+		startActivity(i);*/
 	}
 	
 	private class SampleItem {  

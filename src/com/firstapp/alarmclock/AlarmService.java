@@ -23,7 +23,7 @@ public class AlarmService extends Service{
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
 		
 		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		alarmMgr.set(AlarmManager.RTC_WAKEUP, intent.getLongExtra(MainActivity.TIMETOSEND, 0), pendingIntent);
+		alarmMgr.set(AlarmManager.RTC_WAKEUP, intent.getLongExtra(AlarmContentFragment.TIMETOSEND, 0), pendingIntent);
 	
 		NotificationCompat.Builder notebuilder=new NotificationCompat.Builder(this);
 		notebuilder.setSmallIcon(R.drawable.notification_bar);

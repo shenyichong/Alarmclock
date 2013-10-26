@@ -1,39 +1,47 @@
 package com.firstapp.alarmclock;
 
-import java.util.Calendar;
+//import java.util.Calendar;
+import java.util.Vector;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import android.media.RingtoneManager;
+//import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
+//import android.provider.MediaStore;
+//import android.support.v4.content.CursorLoader;
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.Intent;
+//import android.app.DialogFragment;
+import android.content.Context;
+//import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
+//import android.database.Cursor;
 import android.view.Menu;
-import android.view.View;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
+//import android.view.View;
+//import android.widget.SeekBar;
+//import android.widget.TextView;
+//import android.widget.Toast;
+//import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity {
 	
 	private SlidingMenu slidingmenu;
 	
-	private static final String STATE_HOUR = "HOUR";
-	private static final String STATE_MINUTE = "MINUTE";
-	private static final String STATE_URI = "URI";
-	private static final String PREFS_NAME="SETTINGS";
-	private static final String STATE_MUSIC = "MUSIC";
-	private static final String STATE_BUTTON = "BUTTON";
-	private static final String STATE_VIBRATE= "VIBRATE";
-	public static final String TIMETOSEND = "TIME";
-	private static final String ALARM_NAME = "NAME";
+	//private static final String STATE_HOUR = "HOUR";
+	//private static final String STATE_MINUTE = "MINUTE";
+	//private static final String STATE_URI = "URI";
+	//private static final String PREFS_NAME="SETTINGS";
+	
+	private static final String GLO_SETTINGS="GLOBAL_SETTINGS";
+	private static final String MENU_NUM = "MENU_NUMBER";
+	private static final String MENU_FLAG = "MENU_FLAG";
+	private static final String CUR_MENU_NUM = "CURRENT_MENU_NUMBER";
+	
+	//private static final String STATE_MUSIC = "MUSIC";
+	//private static final String STATE_BUTTON = "BUTTON";
+	//private static final String STATE_VIBRATE= "VIBRATE";
+	//public static final String TIMETOSEND = "TIME";
+	//private static final String ALARM_NAME = "NAME";
 	
 	static int hourIntoflag = 0;
 	static String ringtone_name;
@@ -48,8 +56,11 @@ public class MainActivity extends Activity {
 	static boolean buttonVibrate;
 	static String alarm_name;
 	
+	static int menu_number;
+	static int cur_menu_number;
 	
-	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
+	
+/*	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
 
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
@@ -156,14 +167,32 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			hourIntoflag=0;
 		}
-	};
+	};*/
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-        
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
+		setContentView(R.layout.content_frame);
+		//check whether there are globalSettings existing.
+		SharedPreferences globalSettings =  getSharedPreferences(GLO_SETTINGS,Context.MODE_PRIVATE);
+		if (globalSettings.getString(MENU_FLAG, null) == null) {
+			menu_number=3;
+			cur_menu_number=1;
+		}else {
+			menu_number=globalSettings.getInt(MENU_NUM, 3);
+			cur_menu_number=globalSettings.getInt(CUR_MENU_NUM, 1);
+		}
+		//create the vector preferenceVector to store different sharedPreference file names.
+		Vector<String> preferenceVector = new Vector<String>();
+		String defaultString = "Pref_";
+		String eachString;
+		for (int i = 0; i < menu_number; i++) {
+			eachString=defaultString+String.valueOf(i+1);
+			preferenceVector.add(eachString);
+		}
+		
+		/*
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME,Context.MODE_PRIVATE);
 		if(settings.getString(STATE_MUSIC, null) == null){
 			final Calendar c = Calendar.getInstance();
 			Hour = c.get(Calendar.HOUR_OF_DAY);
@@ -233,7 +262,7 @@ public class MainActivity extends Activity {
 		
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
-		buttonVflag.setChecked(buttonVibrate);
+		buttonVflag.setChecked(buttonVibrate);*/
 		
 		//initialize the SlidingMenu menu
         initSlidingMenu();  
@@ -241,9 +270,8 @@ public class MainActivity extends Activity {
 	 
 	private void initSlidingMenu() {  
         //setting up the main content View
-        //setContentView(R.layout.content_frame);  
-        //getFragmentManager().beginTransaction().replace(R.id.content_frame, new SampleListFragment()).commit(); 
-	
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, new AlarmContentFragment()).commit(); 
+		
         //setting up the distribute of sliding menu 
         slidingmenu = new SlidingMenu(this);  
         slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);  
@@ -290,8 +318,16 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onStop() {
 	    super.onStop();  // Always call the superclass method first
-	    //store datas
-	    SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
+	    
+	    //store datas in total.
+	    SharedPreferences globalSettings =  getSharedPreferences(GLO_SETTINGS,Context.MODE_PRIVATE);
+	    SharedPreferences.Editor Total_editor = globalSettings.edit();
+	    Total_editor.putString(MENU_FLAG, "MENU_EXIST");
+	    Total_editor.putInt(MENU_NUM, menu_number);
+	    Total_editor.putInt(CUR_MENU_NUM, cur_menu_number);
+	    Total_editor.commit();
+	    
+	    /* SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putInt(STATE_HOUR, Hour);
 	    editor.putInt(STATE_MINUTE, Minute);
@@ -318,27 +354,27 @@ public class MainActivity extends Activity {
 		int hoursLeft=(int)Math.floor((set-now)/1000/3600);
 		long mod=(set-now)%(1000*3600);
 		int minutesLeft=(int)Math.floor(mod/1000/60);
-		if (minutesLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked()){
+		if (minutesLeft == 0 && ((ToggleButton)findViewById(R.id.Ring_set)).isChecked()){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
-		else if (hoursLeft == 0 && ((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked()){
+		else if (hoursLeft == 0 && ((ToggleButton)findViewById(R.id.Ring_set)).isChecked()){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
-		else if(((ToggleButton)this.findViewById(R.id.Ring_set)).isChecked()){
+		else if(((ToggleButton)findViewById(R.id.Ring_set)).isChecked()){
 			Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 		}
 		
-		this.setRing(this.findViewById(R.id.Ring_set));
+		this.setRing(findViewById(R.id.Ring_set));*/
 	}	
 	
-	public void fillinName(View view){
+	/*public void fillinName(View view){
 		DialogFragment newFragment = new clockNameDialog();
 	    newFragment.show(getFragmentManager(), "Alarm_Name"); 
-	}
+	}*/
 	
 	
 	/*select ring*/
-	public void selectRingtone(View v){
+/*	public void selectRingtone(View v){
 		Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
 		intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getResources().getString(R.string.ringselectTitle));
 		intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
@@ -382,7 +418,7 @@ public class MainActivity extends Activity {
 		buttonVibrate=on;
 	}
 	
-	/*start the alarm*/
+	start the alarm
 	public void setRing(View view){
 		
 		boolean on = ((ToggleButton) view).isChecked();
@@ -410,7 +446,7 @@ public class MainActivity extends Activity {
 	        // turn off the alarm
 	    	this.stopService(toService);
 		}
-	}
+	}*/
 	
 	public static void cancelAlarm(){
 		
