@@ -29,7 +29,7 @@ public class AlarmService extends Service{
 		notebuilder.setSmallIcon(R.drawable.notification_bar);
 		notebuilder.setContentTitle(getResources().getString(R.string.app_name));
 		//set the ringing time
-		notebuilder.setContentText(getResources().getString(R.string.notificationText1)+ String.valueOf(MainActivity.Hour) + getResources().getString(R.string.notificationText2) + String.valueOf(MainActivity.Minute) + getResources().getString(R.string.notificationText3));
+		notebuilder.setContentText(getResources().getString(R.string.notificationText1)+ String.valueOf(AlarmContentFragment.Hour) + getResources().getString(R.string.notificationText2) + String.valueOf(AlarmContentFragment.Minute) + getResources().getString(R.string.notificationText3));
 		
 		Intent resultIntent = new Intent(this, MainActivity.class);
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

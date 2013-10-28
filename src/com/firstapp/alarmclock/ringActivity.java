@@ -47,7 +47,7 @@ public class ringActivity extends Activity{
 		
 		//set Vibration
 		vibrator=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-		if(MainActivity.buttonVibrate){
+		if(AlarmContentFragment.buttonVibrate){
 			vibrator.vibrate(new long[]{1000,1000},0);
 		}
 		
@@ -56,7 +56,7 @@ public class ringActivity extends Activity{
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		mediaPlayer.setLooping(true);
 		try {
-			mediaPlayer.setDataSource(getApplicationContext(), MainActivity.ringtone_Uri);
+			mediaPlayer.setDataSource(getApplicationContext(), AlarmContentFragment.ringtone_Uri);
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,7 +111,7 @@ public class ringActivity extends Activity{
 		mediaPlayer.pause();
 		mediaPlayer=null;
 		//stop vibration if any
-		if(MainActivity.buttonVibrate){
+		if(AlarmContentFragment.buttonVibrate){
 			vibrator.cancel();
 		}
 		vibrator=null;

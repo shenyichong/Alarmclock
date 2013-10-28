@@ -16,6 +16,7 @@ import android.support.v4.content.CursorLoader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,21 +40,21 @@ public class AlarmContentFragment extends Fragment{
 
 	private static final String ALARM_NAME = "NAME";
 	
-	int contentFragNum;
-	String preferencesNameString;
+	static int contentFragNum;
+	static String preferencesNameString;
 	
-	int hourIntoflag;
-	String ringtone_name;
-	int Hour;
-	int Minute;
-	int Year;
-	int Month;
-	int Day;
-	Uri ringtone_Uri;
-	String music_name;
-	boolean buttonOn;
-	boolean buttonVibrate;
-	String alarm_name;
+	static int hourIntoflag=0;
+	static String ringtone_name;
+	static int Hour;
+	static int Minute;
+	static int Year;
+	static int Month;
+	static int Day;
+	static Uri ringtone_Uri;
+	static String music_name;
+	static boolean buttonOn;
+	static boolean buttonVibrate;
+	static String alarm_name;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,15 +130,44 @@ public class AlarmContentFragment extends Fragment{
   		HourSet.setOnSeekBarChangeListener(mSeekBarChangeListener1);
   		MinuteSet.setOnSeekBarChangeListener(mSeekBarChangeListener2);
   		
-  		//set the alarm name
+  		//set the alarm name and register the listeners of buttons.
+  		Button ringSelect = (Button)getActivity().findViewById(R.id.button_ringselect);
+  		ringSelect.setOnClickListener(new View.OnClickListener() {
+  		    @Override
+  		    public void onClick(View v) {
+  		    	selectRingtone(v);
+  		    }
+  		});
+
   		TextView alarmNameView = (TextView)getActivity().findViewById(R.id.ringcontent_blank);
-  		alarmNameView.setText(alarm_name);
+  		alarmNameView.setOnClickListener(new View.OnClickListener() {
+  		    @Override
+  		    public void onClick(View v) {
+  		    	fillinName(v);
+  		    }
+  		});
+  		
+  		//register listeners
+  		ToggleButton buttonflag=(ToggleButton)getActivity().findViewById(R.id.Ring_set);
+  		buttonflag.setOnClickListener(new View.OnClickListener() {
+  		    @Override
+  		    public void onClick(View v) {
+  		    	setRing(v);
+  		    }
+  		});
+  		
+  		ToggleButton buttonVflag=(ToggleButton)getActivity().findViewById(R.id.Vibrate_set);
+  		buttonVflag.setOnClickListener(new View.OnClickListener() {
+  		    @Override
+  		    public void onClick(View v) {
+  		    	setVibrate(v);
+  		    }
+  		});
   		
   		TextView ringname=(TextView)getActivity().findViewById(R.id.ringname);
-  		ToggleButton buttonflag=(ToggleButton)getActivity().findViewById(R.id.Ring_set);
-  		ToggleButton buttonVflag=(ToggleButton)getActivity().findViewById(R.id.Vibrate_set);
-  		
   		ringname.setText(music_name);
+  		
+  		alarmNameView.setText(alarm_name);
   		buttonflag.setChecked(buttonOn);
   		buttonVflag.setChecked(buttonVibrate);
       	

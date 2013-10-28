@@ -7,6 +7,7 @@ import com.firstapp.alarmclock.R.drawable;
 import com.firstapp.alarmclock.R.id;
 import com.firstapp.alarmclock.R.layout;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,21 @@ public class SampleListFragment extends ListFragment{
 	public int ListNum;
 	public ArrayList<String> AlarmNames = new ArrayList<String>();
 	
+	public interface OnItemClickedListener {
+		public void onItemClicked(int position);
+	}
+	OnItemClickedListener mListener;
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnItemClickedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnItemClickedListener");
+        }
+    }
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
         return inflater.inflate(R.layout.list, null); 
     }  
@@ -39,12 +55,8 @@ public class SampleListFragment extends ListFragment{
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id){
 		
-		MainActivity.cur_menu_number = position+1;
 		// Implement an interface to interact with MainActivity.
-		
-		/* Intent i = new Intent();
-		i.setClass(getActivity(), AlarmContentFragment.class);
-		startActivity(i);*/
+		mListener.onItemClicked(position);
 	}
 	
 	private class SampleItem {  

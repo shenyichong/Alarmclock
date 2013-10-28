@@ -23,7 +23,8 @@ import android.view.Menu;
 //import android.widget.ToggleButton;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity 
+			implements SampleListFragment.OnItemClickedListener{
 	
 	private SlidingMenu slidingmenu;
 	
@@ -43,7 +44,7 @@ public class MainActivity extends Activity {
 	//public static final String TIMETOSEND = "TIME";
 	//private static final String ALARM_NAME = "NAME";
 	
-	static int hourIntoflag = 0;
+	/*static int hourIntoflag = 0;
 	static String ringtone_name;
 	static int Hour;
 	static int Minute;
@@ -54,7 +55,7 @@ public class MainActivity extends Activity {
 	static String music_name;
 	static boolean buttonOn;
 	static boolean buttonVibrate;
-	static String alarm_name;
+	static String alarm_name;*/
 	
 	static int menu_number;
 	static int cur_menu_number;
@@ -173,6 +174,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_frame);
+		
 		//check whether there are globalSettings existing.
 		SharedPreferences globalSettings =  getSharedPreferences(GLO_SETTINGS,Context.MODE_PRIVATE);
 		if (globalSettings.getString(MENU_FLAG, null) == null) {
@@ -291,6 +293,14 @@ public class MainActivity extends Activity {
         slidingmenu.setMenu(R.layout.menu_frame);     
         getFragmentManager().beginTransaction().replace(R.id.menu_frame,samplist).commit();  
     } 
+	
+	//Implementation of the interface of SampListFragment.
+	public void onItemClicked(int position){
+		cur_menu_number = position+1;
+		getFragmentManager().beginTransaction().replace(R.id.content_frame, new AlarmContentFragment()).commit();
+		slidingmenu.showContent();
+	}
+	
 	@Override  
 	public void onBackPressed() {  
        // click return key to return the sliding menu
