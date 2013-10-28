@@ -145,7 +145,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int Text_setVibrate=0x7f040015;
         public static final int Text_setring=0x7f040017;
         public static final int Vibrate_set=0x7f040016;
-        public static final int action_settings=0x7f040024;
+        public static final int action_settings=0x7f040025;
         public static final int alarm_name=0x7f04001f;
         public static final int button_cancel=0x7f04001b;
         public static final int button_ringselect=0x7f040013;
@@ -160,8 +160,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int linear4=0x7f04000d;
         public static final int linear5=0x7f040010;
         public static final int linear6=0x7f040014;
+        public static final int listfragment=0x7f040020;
         public static final int margin=0x7f040002;
-        public static final int menu_frame=0x7f040020;
+        public static final int menu_frame=0x7f040021;
         public static final int right=0x7f040001;
         public static final int ringHour=0x7f040008;
         public static final int ringHourMinuteShow=0x7f040006;
@@ -171,12 +172,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ringing=0x7f040019;
         public static final int ringname=0x7f040012;
         public static final int ringselect=0x7f040011;
-        public static final int row_icon=0x7f040021;
-        public static final int row_title=0x7f040022;
+        public static final int row_icon=0x7f040022;
+        public static final int row_title=0x7f040023;
         public static final int seekBar1=0x7f040009;
         public static final int seekBar2=0x7f04000c;
         public static final int selected_view=0x7f040004;
-        public static final int slidingmenumain=0x7f040023;
+        public static final int slidingmenumain=0x7f040024;
         public static final int title_name=0x7f04001e;
     }
     public static final class layout {

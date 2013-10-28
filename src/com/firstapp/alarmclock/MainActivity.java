@@ -21,10 +21,11 @@ import android.view.Menu;
 //import android.widget.TextView;
 //import android.widget.Toast;
 //import android.widget.ToggleButton;
+import android.widget.ListView;
 
 
 public class MainActivity extends Activity 
-			implements SampleListFragment.OnItemClickedListener{
+			implements SampleListFragment.OnItemClickedListener,AlarmContentFragment.ClockChangeListener{
 	
 	private SlidingMenu slidingmenu;
 	
@@ -301,6 +302,11 @@ public class MainActivity extends Activity
 		slidingmenu.showContent();
 	}
 	
+	//Implementation of the interface of AlarmContentFragment.
+	public void onClockChange(String str){
+		ListView listFrag = (ListView)findViewById(R.id.listfragment);
+		listFrag.getItemAtPosition(cur_menu_number-1);
+	}
 	@Override  
 	public void onBackPressed() {  
        // click return key to return the sliding menu

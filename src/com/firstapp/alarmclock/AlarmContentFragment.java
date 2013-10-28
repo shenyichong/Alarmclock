@@ -2,6 +2,9 @@ package com.firstapp.alarmclock;
 
 import java.util.Calendar;
 
+import com.firstapp.alarmclock.SampleListFragment.OnItemClickedListener;
+
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
@@ -55,6 +58,23 @@ public class AlarmContentFragment extends Fragment{
 	static boolean buttonOn;
 	static boolean buttonVibrate;
 	static String alarm_name;
+	
+	public interface ClockChangeListener{
+		public void onClockChange(String TimeShown);
+	}
+	
+	ClockChangeListener mClockListener;
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mClockListener = (ClockChangeListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement ClockChangeListener");
+        }
+    }
+	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -299,7 +319,6 @@ public class AlarmContentFragment extends Fragment{
 	    	getActivity().stopService(toService);
 		}
 	}
-
     
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
 
@@ -330,16 +349,20 @@ public class AlarmContentFragment extends Fragment{
 			if (tempMinuteInteger==60) {
 				tempMinuteInteger=0;
 			}
-			
+			String str;
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
-				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
+				str="0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString();
 			}else if (tempMinuteInteger < 10) {
-				hour_minute_View.setText(tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString());
+				str=tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString();
 			}else if( tempHourInteger < 10){
-				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString());
+				str="0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString();
 			}else {
-				hour_minute_View.setText(tempHourInteger.toString()+":"+ tempMinuteInteger.toString());
+				str=tempHourInteger.toString()+":"+ tempMinuteInteger.toString();
 			}
+			
+			hour_minute_View.setText(str);
+			mClockListener.onClockChange(str);
+			
 		}
 
 		@Override
@@ -386,16 +409,18 @@ public class AlarmContentFragment extends Fragment{
 				}
 				MinuteSet.setProgress(0);
 			}
-
+			String str;
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
-				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString());
+				str="0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString();
 			}else if (tempMinuteInteger < 10) {
-				hour_minute_View.setText(tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString());
+				str=tempHourInteger.toString()+":"+ "0"+tempMinuteInteger.toString();
 			}else if( tempHourInteger < 10){
-				hour_minute_View.setText("0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString());
+				str="0"+tempHourInteger.toString() +":"+tempMinuteInteger.toString();
 			}else {
-				hour_minute_View.setText(tempHourInteger.toString()+":"+ tempMinuteInteger.toString());
+				str=tempHourInteger.toString()+":"+ tempMinuteInteger.toString();
 			}
+			hour_minute_View.setText(str);
+			mClockListener.onClockChange(str);
 		}
 		
 		@Override
