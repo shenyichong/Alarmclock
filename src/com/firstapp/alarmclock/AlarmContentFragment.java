@@ -397,7 +397,7 @@ public class AlarmContentFragment extends Fragment{
 				hour_minute_View.setText(tempHourInteger.toString()+":"+ tempMinuteInteger.toString());
 			}
 		}
-
+		
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
