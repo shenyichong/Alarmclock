@@ -2,8 +2,6 @@ package com.firstapp.alarmclock;
 
 import java.util.Calendar;
 
-import com.firstapp.alarmclock.SampleListFragment.OnItemClickedListener;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;

@@ -302,10 +302,18 @@ public class MainActivity extends Activity
 		slidingmenu.showContent();
 	}
 	
+	public interface ClockChangeListener2{
+		public void onClockChange2(String str);
+	}
+	
+	ClockChangeListener2 mclocklistener2;
+	
+	
 	//Implementation of the interface of AlarmContentFragment.
 	public void onClockChange(String str){
 		ListView listFrag = (ListView)findViewById(R.id.listfragment);
 		listFrag.getItemAtPosition(cur_menu_number-1);
+		
 	}
 	@Override  
 	public void onBackPressed() {  
