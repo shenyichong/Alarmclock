@@ -3,12 +3,14 @@ package com.firstapp.alarmclock;
 //import java.util.Calendar;
 import java.util.Vector;
 
+import com.firstapp.alarmclock.SampleListFragment.SampleItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 //import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 //import android.provider.MediaStore;
 //import android.support.v4.content.CursorLoader;
+import android.R.integer;
 import android.app.Activity;
 //import android.app.DialogFragment;
 import android.content.Context;
@@ -305,7 +307,13 @@ public class MainActivity extends Activity
 	//Implementation of the interface of AlarmContentFragment.
 	public void onClockChange(String str){
 		ListView listFrag = (ListView)findViewById(R.id.listfragment);
-		listFrag.getItemAtPosition(cur_menu_number-1);
+		SampleListFragment.SampleAdapter adapter= (SampleListFragment.SampleAdapter)listFrag.getAdapter();
+		adapter.getItem(cur_menu_number-1).tag = str;
+		adapter.clear();
+		for (int i = 0; i < menu_number; i++) { 
+            adapter.add(new SampleItem(SampleListFragment., R.drawable.notify_button));  
+        }
+        setListAdapter(adapter); 
 	}
 	@Override  
 	public void onBackPressed() {  

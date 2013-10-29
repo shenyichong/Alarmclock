@@ -44,7 +44,7 @@ public class SampleListFragment extends ListFragment{
         SampleAdapter adapter = new SampleAdapter(getActivity());  
         for (int i = 0; i < ListNum; i++) { 
             adapter.add(new SampleItem(AlarmNames.get(i), R.drawable.notify_button));  
-        }  
+        }
         setListAdapter(adapter); 
     }
 	
@@ -55,7 +55,7 @@ public class SampleListFragment extends ListFragment{
 		mListener.onItemClicked(position);
 	}
 	
-	private class SampleItem {  
+	public class SampleItem {  
         public String tag;  
         public int iconRes;  
         public SampleItem(String tag, int iconRes) {  

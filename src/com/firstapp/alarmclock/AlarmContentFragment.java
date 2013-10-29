@@ -321,7 +321,8 @@ public class AlarmContentFragment extends Fragment{
 	}
     
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
-
+		
+		String str = "00:00";
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
@@ -349,7 +350,6 @@ public class AlarmContentFragment extends Fragment{
 			if (tempMinuteInteger==60) {
 				tempMinuteInteger=0;
 			}
-			String str;
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
 				str="0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString();
 			}else if (tempMinuteInteger < 10) {
@@ -361,7 +361,7 @@ public class AlarmContentFragment extends Fragment{
 			}
 			
 			hour_minute_View.setText(str);
-			mClockListener.onClockChange(str);
+			
 			
 		}
 
@@ -373,12 +373,13 @@ public class AlarmContentFragment extends Fragment{
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
-			
+			mClockListener.onClockChange(str);
 		}
 	};
 	
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener2 = new SeekBar.OnSeekBarChangeListener(){
 
+		String str = "00:00";
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
@@ -409,7 +410,6 @@ public class AlarmContentFragment extends Fragment{
 				}
 				MinuteSet.setProgress(0);
 			}
-			String str;
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
 				str="0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString();
 			}else if (tempMinuteInteger < 10) {
@@ -420,7 +420,6 @@ public class AlarmContentFragment extends Fragment{
 				str=tempHourInteger.toString()+":"+ tempMinuteInteger.toString();
 			}
 			hour_minute_View.setText(str);
-			mClockListener.onClockChange(str);
 		}
 		
 		@Override
@@ -432,6 +431,7 @@ public class AlarmContentFragment extends Fragment{
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
 			hourIntoflag=0;
+			mClockListener.onClockChange(str);
 		}
 	};
 	
