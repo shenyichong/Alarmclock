@@ -89,7 +89,7 @@ public class AlarmContentFragment extends Fragment{
         preferencesNameString = "Pref_"+String.valueOf(contentFragNum);
         SharedPreferences settings = getActivity().getSharedPreferences(preferencesNameString,Context.MODE_PRIVATE);
 		if(settings.getString(STATE_MUSIC, null) == null){
-			final Calendar c = Calendar.getInstance();
+			/*final Calendar c = Calendar.getInstance();
 			Hour = c.get(Calendar.HOUR_OF_DAY);
 			Minute = c.get(Calendar.MINUTE)+1;
 			if (Minute >= 60) {
@@ -97,7 +97,9 @@ public class AlarmContentFragment extends Fragment{
 				if (Hour >= 24){
 					Hour=0;
 				}
-			}
+			}*/
+			Minute=0;
+			Hour=0;
 			
 			ringtone_Uri=Uri.parse("content://settings/system/ringtone");
 			music_name=getResources().getString(R.string.defaultRing);
@@ -112,7 +114,7 @@ public class AlarmContentFragment extends Fragment{
 		    music_name=settings.getString(STATE_MUSIC, getResources().getString(R.string.defaultRing));
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
 		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);
-		    alarm_name=settings.getString(alarm_name,getResources().getString(R.string.ringcontent_blank));
+		    alarm_name=settings.getString(ALARM_NAME,getResources().getString(R.string.ringcontent_blank));
 		}
 		final Calendar c = Calendar.getInstance();
 		Year = c.get(Calendar.YEAR);
@@ -319,7 +321,8 @@ public class AlarmContentFragment extends Fragment{
 	}
     
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
-
+		
+		String str = "00:00";
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
@@ -347,7 +350,6 @@ public class AlarmContentFragment extends Fragment{
 			if (tempMinuteInteger==60) {
 				tempMinuteInteger=0;
 			}
-			String str;
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
 				str="0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString();
 			}else if (tempMinuteInteger < 10) {
@@ -359,7 +361,7 @@ public class AlarmContentFragment extends Fragment{
 			}
 			
 			hour_minute_View.setText(str);
-			mClockListener.onClockChange(str);
+			
 			
 		}
 
@@ -371,12 +373,13 @@ public class AlarmContentFragment extends Fragment{
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
-			
+			mClockListener.onClockChange(str+" "+alarm_name);
 		}
 	};
 	
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener2 = new SeekBar.OnSeekBarChangeListener(){
 
+		String str = "00:00";
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
@@ -407,7 +410,6 @@ public class AlarmContentFragment extends Fragment{
 				}
 				MinuteSet.setProgress(0);
 			}
-			String str;
 			if (tempHourInteger < 10 && tempMinuteInteger < 10) {
 				str="0"+tempHourInteger.toString() +":"+ "0"+tempMinuteInteger.toString();
 			}else if (tempMinuteInteger < 10) {
@@ -418,7 +420,6 @@ public class AlarmContentFragment extends Fragment{
 				str=tempHourInteger.toString()+":"+ tempMinuteInteger.toString();
 			}
 			hour_minute_View.setText(str);
-			mClockListener.onClockChange(str);
 		}
 		
 		@Override
@@ -430,6 +431,7 @@ public class AlarmContentFragment extends Fragment{
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
 			hourIntoflag=0;
+			mClockListener.onClockChange(str+" "+alarm_name);
 		}
 	};
 	

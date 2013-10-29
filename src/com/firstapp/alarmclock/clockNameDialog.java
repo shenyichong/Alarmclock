@@ -1,6 +1,7 @@
 package com.firstapp.alarmclock;
 
 
+import com.firstapp.alarmclock.AlarmContentFragment.ClockChangeListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,6 +28,20 @@ public class clockNameDialog extends DialogFragment{
 	
 	// Use this instance of the interface to deliver action events
 	NameDialogListener mListener;*/
+	public interface clockNameChangeListener{
+		public void onClockNameChange(String str);
+	}
+	clockNameChangeListener mclocknameChange;
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+        	mclocknameChange = (clockNameChangeListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement clockNameChangeListener");
+        }
+    }
 	
 	public static String alarmName = "ÎçË¯ÄÖÖÓ";
 	
@@ -46,13 +61,13 @@ public class clockNameDialog extends DialogFragment{
 					   @Override    
 					   public void onClick(DialogInterface dialog, int id) {
 			                   // User confirmed the dialog
-						   alarmName=nameAlarmText.getText().toString();
+						   	   alarmName=nameAlarmText.getText().toString();
 			               }
 			           });
 		nameBuilder.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
 					       public void onClick(DialogInterface dialog, int id) {
 					           // User cancelled the dialog
-					    	   //mListener.onDialogNegativeClick(clockNameDialog.this);
+					    	   alarmName=AlarmContentFragment.alarm_name;
 					    	   clockNameDialog.this.getDialog().cancel();
 					       }
 					    });
@@ -64,6 +79,8 @@ public class clockNameDialog extends DialogFragment{
 		AlarmContentFragment.alarm_name=alarmName;
 		v.setText(alarmName);
 		super.onDestroyView();
+		TextView hour_minute_View = (TextView)getActivity().findViewById(R.id.ringHourMinuteShow);
+		mclocknameChange.onClockNameChange(hour_minute_View.getText()+" "+alarmName);
 	}
 	
 }

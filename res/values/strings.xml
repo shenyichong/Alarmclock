@@ -27,7 +27,7 @@
 	<string name="notificationText6">从现在起不到一分钟</string>
 	<string name="notify_button">关闭闹钟</string>
 	<string name="ringcontent">闹钟名称</string>
-	<string name="ringcontent_blank">输入闹钟名称</string>
+	<string name="ringcontent_blank">闹铃</string>
 	
 	<string name="dialog_title">输入闹钟名称</string>
 	<string name="alarm_name">午睡闹钟</string>

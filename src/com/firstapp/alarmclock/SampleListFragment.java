@@ -19,7 +19,6 @@ import android.widget.TextView;
 public class SampleListFragment extends ListFragment{ 
 	
 	public int ListNum;
-	public ArrayList<String> AlarmNames = new ArrayList<String>();
 	
 	public interface OnItemClickedListener {
 		public void onItemClicked(int position);
@@ -43,8 +42,8 @@ public class SampleListFragment extends ListFragment{
         super.onActivityCreated(savedInstanceState);  
         SampleAdapter adapter = new SampleAdapter(getActivity());  
         for (int i = 0; i < ListNum; i++) { 
-            adapter.add(new SampleItem(AlarmNames.get(i), R.drawable.notify_button));  
-        }  
+            adapter.add(new SampleItem(MainActivity.AlarmNames.get(i), R.drawable.notify_button));  
+        }
         setListAdapter(adapter); 
     }
 	
@@ -55,7 +54,7 @@ public class SampleListFragment extends ListFragment{
 		mListener.onItemClicked(position);
 	}
 	
-	private class SampleItem {  
+	public class SampleItem {  
         public String tag;  
         public int iconRes;  
         public SampleItem(String tag, int iconRes) {  
