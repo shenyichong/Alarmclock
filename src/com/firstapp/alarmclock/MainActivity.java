@@ -1,6 +1,7 @@
 package com.firstapp.alarmclock;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -9,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.Menu;
+import android.widget.ListView;
 
 
 public class MainActivity extends Activity 
@@ -26,6 +28,7 @@ public class MainActivity extends Activity
 	static int menu_number;
 	static int cur_menu_number;
 	public static ArrayList<String> AlarmNames = new ArrayList<String>();
+	public static ArrayList<Long> AlarmTimes = new ArrayList<Long>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

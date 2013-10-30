@@ -78,7 +78,7 @@ public class AlarmContentFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.activity_main,container,false);
     }
 	
 	public void onActivityCreated(Bundle savedInstanceState) {  
@@ -262,31 +262,6 @@ public class AlarmContentFragment extends Fragment{
 	    editor.putBoolean(STATE_BUTTON, buttonflag.isChecked());
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
-	    
-	    //show how long will take before the alarm goes off.
-	    Calendar c= Calendar.getInstance();
-		long now=c.getTimeInMillis();
-		Calendar setTime = Calendar.getInstance(); 
-		setTime.set(Year, Month, Day, Hour, Minute,0); 
-		long set=setTime.getTimeInMillis();
-		if (now>set) {
-			setTime.set(Year, Month, Day+1, Hour, Minute,0); 
-			set=setTime.getTimeInMillis();
-		}
-		int hoursLeft=(int)Math.floor((set-now)/1000/3600);
-		long mod=(set-now)%(1000*3600);
-		int minutesLeft=(int)Math.floor(mod/1000/60);
-		if (minutesLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
-			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
-		}
-		else if (hoursLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
-			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
-		}
-		else if(((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
-			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
-		}
-		//set the Alarm.
-		setRing(getActivity().findViewById(R.id.Ring_set));
 	}
 	
 	
@@ -304,14 +279,25 @@ public class AlarmContentFragment extends Fragment{
 		Intent toService = new Intent(getActivity(),AlarmService.class);
 		
 		if (on) {
-			if (setORnot) {
-				 // turn on the alarm 
-				toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
-				getActivity().startService(toService);
-			}else {
+			if (!setORnot) {
 				setTime.set(Year, Month, Day+1, Hour, Minute,0); 
-				toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
-				getActivity().startService(toService);
+				set=setTime.getTimeInMillis();
+				//toService.putExtra(TIMETOSEND, set);	
+				//getActivity().startService(toService);
+			}
+			MainActivity.AlarmTimes.add(set);
+			
+			int hoursLeft=(int)Math.floor((set-now)/1000/3600);
+			long mod=(set-now)%(1000*3600);
+			int minutesLeft=(int)Math.floor(mod/1000/60);
+			if (minutesLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
+				Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+			}
+			else if (hoursLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
+				Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+			}
+			else if(((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
+				Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 			}
 		}
 		else {
