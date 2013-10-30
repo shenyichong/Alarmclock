@@ -25,7 +25,6 @@ import android.widget.ToggleButton;
 
 public class AlarmContentFragment extends Fragment{
 	
-	public static final String TIMETOSEND = "TIME";
 
 	private static final String STATE_HOUR = "HOUR";
 
@@ -262,6 +261,8 @@ public class AlarmContentFragment extends Fragment{
 	    editor.putBoolean(STATE_BUTTON, buttonflag.isChecked());
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
+	    
+	    //setRing(getActivity().findViewById(R.id.Ring_set));
 	}
 	
 	
@@ -276,17 +277,14 @@ public class AlarmContentFragment extends Fragment{
 		long now=nowTime.getTimeInMillis();
 		long set=setTime.getTimeInMillis();
 		boolean setORnot=(now < set);
-		Intent toService = new Intent(getActivity(),AlarmService.class);
 		
 		if (on) {
 			if (!setORnot) {
 				setTime.set(Year, Month, Day+1, Hour, Minute,0); 
 				set=setTime.getTimeInMillis();
-				//toService.putExtra(TIMETOSEND, set);	
-				//getActivity().startService(toService);
+				
 			}
 			MainActivity.AlarmTimes.add(set);
-			
 			int hoursLeft=(int)Math.floor((set-now)/1000/3600);
 			long mod=(set-now)%(1000*3600);
 			int minutesLeft=(int)Math.floor(mod/1000/60);
@@ -302,7 +300,8 @@ public class AlarmContentFragment extends Fragment{
 		}
 		else {
 	        // turn off the alarm
-	    	getActivity().stopService(toService);
+			
+	    	//getActivity().stopService(toService);
 		}
 	}
     
@@ -347,7 +346,6 @@ public class AlarmContentFragment extends Fragment{
 			}
 			
 			hour_minute_View.setText(str);
-			
 			
 		}
 

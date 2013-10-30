@@ -8,6 +8,7 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.widget.ListView;
@@ -24,12 +25,14 @@ public class MainActivity extends Activity
 	private static final String MENU_NUM = "MENU_NUMBER";
 	private static final String MENU_FLAG = "MENU_FLAG";
 	private static final String CUR_MENU_NUM = "CURRENT_MENU_NUMBER";
+	private static final String ALARM_NAME = "ALARM_NAME_";
+	
 	
 	static int menu_number;
 	static int cur_menu_number;
 	public static ArrayList<String> AlarmNames = new ArrayList<String>();
 	public static ArrayList<Long> AlarmTimes = new ArrayList<Long>();
-	
+	public static int NumOfAlarmStr;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,9 +43,17 @@ public class MainActivity extends Activity
 		if (globalSettings.getString(MENU_FLAG, null) == null) {
 			menu_number=3;
 			cur_menu_number=1;
+			//initialize the content of the sliding menu
+			for (int i = 0; i < menu_number; i++) {
+	        	AlarmNames.add("00:00"+" "+getString(R.string.ringcontent_blank));
+			}
 		}else {
 			menu_number=globalSettings.getInt(MENU_NUM, 3);
 			cur_menu_number=globalSettings.getInt(CUR_MENU_NUM, 1);
+			//initialize the content of the sliding menu
+			for (int i = 0; i < menu_number; i++) {
+				AlarmNames.add(globalSettings.getString(ALARM_NAME+String.valueOf(i), "00:00"+" "+getString(R.string.ringcontent_blank)));
+			}
 		}
 		//create the vector preferenceVector to store different sharedPreference file names.
 		Vector<String> preferenceVector = new Vector<String>();
@@ -69,12 +80,9 @@ public class MainActivity extends Activity
         slidingmenu.setFadeDegree(0.35f);  
         slidingmenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
         
-        //initialize the content of the sliding menu
+        
         SampleListFragment samplist = new SampleListFragment();
-        samplist.ListNum=3;
-        for (int i = 0; i < samplist.ListNum; i++) {
-        	AlarmNames.add("00:00"+" "+getString(R.string.ringcontent_blank));
-		}
+        samplist.ListNum=menu_number;
         //setting up the sliding menu's view  
         slidingmenu.setMenu(R.layout.menu_frame);     
         getFragmentManager().beginTransaction().replace(R.id.menu_frame,samplist,"samplelistfragment").commit();  
@@ -138,7 +146,36 @@ public class MainActivity extends Activity
 	    Total_editor.putString(MENU_FLAG, "MENU_EXIST");
 	    Total_editor.putInt(MENU_NUM, menu_number);
 	    Total_editor.putInt(CUR_MENU_NUM, cur_menu_number);
+	    for (int i = 0; i < menu_number; i++) {
+			Total_editor.putString(ALARM_NAME+String.valueOf(i), AlarmNames.get(i));
+		}
 	    Total_editor.commit();
+	    
+	    
+	    Intent toService = new Intent(this,AlarmService.class);
+	    NumOfAlarmStr =  AlarmTimes.size();
+	    if(NumOfAlarmStr != 0){
+	    	if(NumOfAlarmStr > 1){
+		    	for (int i = 0; i < NumOfAlarmStr-1; i++) {
+			    	Long temp;
+					for (int j = 1; j < NumOfAlarmStr-i; j++) {
+						if (AlarmTimes.get(j)<AlarmTimes.get(j-1)) {
+							temp=AlarmTimes.get(j);
+							AlarmTimes.set(j,AlarmTimes.get(j-1));
+							AlarmTimes.set(j-1,temp);
+						}
+					}
+				}
+	    	}
+		    String timetosend = "TIMETOSEND_";
+		    for (int i = 0; i < NumOfAlarmStr; i++) {
+		    	toService.putExtra(timetosend+String.valueOf(i), AlarmTimes.get(i));
+			}
+		    this.startService(toService);
+	    }
+	    
+
+	    
 	}
 	
 	public static void cancelAlarm(){

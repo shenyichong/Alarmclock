@@ -129,6 +129,7 @@ public class ringActivity extends Activity{
 		}
 		volMgr=null;
 		
+		
 		this.finish();
 	}
 }
