@@ -1,10 +1,13 @@
 package com.firstapp.alarmclock;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +15,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity 
@@ -26,13 +31,24 @@ public class MainActivity extends Activity
 	private static final String MENU_FLAG = "MENU_FLAG";
 	private static final String CUR_MENU_NUM = "CURRENT_MENU_NUMBER";
 	private static final String ALARM_NAME = "ALARM_NAME_";
+
+	
+	private static final String STATE_BUTTON =  "BUTTON";
+	private static final String STATE_HOUR = "HOUR";
+	private static final String STATE_MINUTE = "MINUTE";
+	private static final String STATE_VIBRATE = "VIBRATE";
+	private static final String STATE_URI = "URI";
+	private static final String STATE_DAY = "DAY";
+	private static final String STATE_TIMEINMILLS = "TIMEINMILLS";
 	
 	
 	static int menu_number;
 	static int cur_menu_number;
 	public static ArrayList<String> AlarmNames = new ArrayList<String>();
 	public static ArrayList<Long> AlarmTimes = new ArrayList<Long>();
-	public static int NumOfAlarmStr;
+	
+	public static ArrayList<AppData> AlarmToRing_Datas = new ArrayList<AppData>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -152,27 +168,64 @@ public class MainActivity extends Activity
 	    Total_editor.commit();
 	    
 	    
-	    Intent toService = new Intent(this,AlarmService.class);
-	    NumOfAlarmStr =  AlarmTimes.size();
-	    if(NumOfAlarmStr != 0){
-	    	if(NumOfAlarmStr > 1){
-		    	for (int i = 0; i < NumOfAlarmStr-1; i++) {
-			    	Long temp;
-					for (int j = 1; j < NumOfAlarmStr-i; j++) {
-						if (AlarmTimes.get(j)<AlarmTimes.get(j-1)) {
-							temp=AlarmTimes.get(j);
-							AlarmTimes.set(j,AlarmTimes.get(j-1));
-							AlarmTimes.set(j-1,temp);
+	    //store the Fragments' data in AlarmToRing_Datas
+	    for (int i = 0; i < menu_number; i++) {
+	    	SharedPreferences alarmFragment = getSharedPreferences("Pref_"+String.valueOf(i+1), Context.MODE_PRIVATE);
+			if (alarmFragment.getString(STATE_URI, null)!=null) {
+				AppData tempData = new AppData();
+				tempData.TimeInMills = alarmFragment.getLong(STATE_TIMEINMILLS, (long)0);
+				tempData.Day = alarmFragment.getInt(STATE_DAY, 1);
+				tempData.Hour = alarmFragment.getInt(STATE_HOUR,0);
+				tempData.Minute = alarmFragment.getInt(STATE_MINUTE,0);
+				tempData.buttonOn = alarmFragment.getBoolean(STATE_BUTTON, false);
+				tempData.buttonVibrate = alarmFragment.getBoolean(STATE_VIBRATE, false);
+				tempData.ringtone_Uri = Uri.parse(alarmFragment.getString(STATE_URI, "content://settings/system/ringtone"));
+				tempData.FragmentNum = i+1;
+				AlarmToRing_Datas.add(tempData);
+			}
+		}
+	    //delete the AlarmToRing_Datas which doesn't ring.
+	    if (AlarmToRing_Datas.size() !=0 ) 
+	    	for (int i = 0; i < AlarmToRing_Datas.size(); i++)
+	    		if (!AlarmToRing_Datas.get(i).buttonOn) 
+	    			AlarmToRing_Datas.remove(i);
+	    
+	 
+	    //sort the AlarmToRing_Datas according to time sequence.
+	    int len = AlarmToRing_Datas.size();
+	    if (len != 0) {
+			if (len > 1) {
+				for (int i = 0; i < len-1; i++) {
+					for (int j = 1; j < len-i; j++) {
+						AppData tempData ;
+						if (AlarmToRing_Datas.get(j).TimeInMills < AlarmToRing_Datas.get(j-1).TimeInMills) {
+							tempData = AlarmToRing_Datas.get(j);
+							AlarmToRing_Datas.set(j, AlarmToRing_Datas.get(j-1));
+							AlarmToRing_Datas.set(j-1, tempData);
 						}
 					}
 				}
-	    	}
-		    String timetosend = "TIMETOSEND_";
-		    for (int i = 0; i < NumOfAlarmStr; i++) {
-		    	toService.putExtra(timetosend+String.valueOf(i), AlarmTimes.get(i));
 			}
-		    this.startService(toService);
-	    }
+			Intent toService = new Intent(this,AlarmService.class);
+	    	this.startService(toService);
+	    	
+	    	//show when the first Alarm will ring. 
+	    	Calendar nowTime = Calendar.getInstance();
+			long now=nowTime.getTimeInMillis();
+			long set=AlarmToRing_Datas.get(0).TimeInMills;
+			int hoursLeft=(int)Math.floor((set-now)/1000/3600);
+			long mod=(set-now)%(1000*3600);
+			int minutesLeft=(int)Math.floor(mod/1000/60);
+			if (hoursLeft == 0 && minutesLeft == 0){
+				Toast.makeText(this, getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+			}
+			else if (minutesLeft != 0 ){
+				Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+			}
+			else {
+				Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
+			}
+		}
 	    
 
 	    

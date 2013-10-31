@@ -14,26 +14,39 @@ import android.support.v4.app.NotificationCompat;
 
 public class AlarmService extends Service{
 	
+	public NotificationCompat.Builder notebuilder=new NotificationCompat.Builder(this);
+	public static int AlarmRingNum;
+	
+	private static AlarmService instance;
+	
+	public static AlarmService getServiceInstance(){
+		return instance;
+	}
+	
 	@SuppressLint("NewApi")
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.
+		instance = this;
 		Intent i=new Intent(this, MyAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
 		
 		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		String timetosend = "TIMETOSEND_";
-		for (int j = 0; j < MainActivity.NumOfAlarmStr; j++) {
-			alarmMgr.set(AlarmManager.RTC_WAKEUP, intent.getLongExtra(timetosend+String.valueOf(j), 0), pendingIntent);
+		//cancel all the Alarm services that set before.
+		alarmMgr.cancel(pendingIntent);
+		
+		AlarmRingNum = MainActivity.AlarmToRing_Datas.size();
+		for (int j = 0; j < AlarmRingNum; j++) {
+			alarmMgr.set(AlarmManager.RTC_WAKEUP,MainActivity.AlarmToRing_Datas.get(j).TimeInMills,pendingIntent);
 		}
 		
-	
-		NotificationCompat.Builder notebuilder=new NotificationCompat.Builder(this);
+		
 		notebuilder.setSmallIcon(R.drawable.notification_bar);
 		notebuilder.setContentTitle(getResources().getString(R.string.app_name));
 		//set the ringing time
-		notebuilder.setContentText(getResources().getString(R.string.notificationText1)+ String.valueOf(AlarmContentFragment.Hour) + getResources().getString(R.string.notificationText2) + String.valueOf(AlarmContentFragment.Minute) + getResources().getString(R.string.notificationText3));
+		//indicate the first alarm ringring time.
+		notebuilder.setContentText(getResources().getString(R.string.notificationText1)+ String.valueOf(MainActivity.AlarmToRing_Datas.get(0).Hour) + getResources().getString(R.string.notificationText2) + String.valueOf(MainActivity.AlarmToRing_Datas.get(0).Minute) + getResources().getString(R.string.notificationText3));
 		
 		Intent resultIntent = new Intent(this, MainActivity.class);
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -63,6 +76,7 @@ public class AlarmService extends Service{
 	@Override
     public void onDestroy() {
         // The service is no longer used and is being destroyed
+		instance=null;
 		this.stopForeground(true);
     }
 }

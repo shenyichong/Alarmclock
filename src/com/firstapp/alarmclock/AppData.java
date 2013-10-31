@@ -19,7 +19,7 @@ public class AppData {
 	public boolean buttonVibrate;
 	public String alarm_name;
 	
-	public AppData(){
-		hourIntoflag=0;
-	}
+	public int FragmentNum;
+	public Long TimeInMills;
+	
 }
