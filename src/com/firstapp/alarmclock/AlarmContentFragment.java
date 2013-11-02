@@ -119,12 +119,13 @@ public class AlarmContentFragment extends Fragment{
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
 		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);
 		    alarm_name=settings.getString(ALARM_NAME,getResources().getString(R.string.ringcontent_blank));
+		    TimeInMills = settings.getLong(STATE_TIMEINMILLS,0);
 		}
 		final Calendar c = Calendar.getInstance();
 		Year = c.get(Calendar.YEAR);
 		Month = c.get(Calendar.MONTH);
 		Day = c.get(Calendar.DAY_OF_MONTH);
-        TimeInMills = (long) 0;
+        
         
         //set TextView to indicate the value of Hour and Minute.
   		TextView hour_minute_View = (TextView)getActivity().findViewById(R.id.ringHourMinuteShow);
@@ -294,14 +295,13 @@ public class AlarmContentFragment extends Fragment{
 				Day=Day+1;
 				setTime.set(Year, Month, Day, Hour, Minute,0); 
 				set=setTime.getTimeInMillis();
-				TimeInMills = set;
 			}
-		}
-		else {
-	        // turn off the alarm
+		}else {
+			//do something
 			
-	    	// do nothing
 		}
+		
+		TimeInMills = set;
 	}
     
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){

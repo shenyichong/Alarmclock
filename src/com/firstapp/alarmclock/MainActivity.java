@@ -169,6 +169,7 @@ public class MainActivity extends Activity
 	    
 	    
 	    //store the Fragments' data in AlarmToRing_Datas
+	    AlarmToRing_Datas.clear();
 	    for (int i = 0; i < menu_number; i++) {
 	    	SharedPreferences alarmFragment = getSharedPreferences("Pref_"+String.valueOf(i+1), Context.MODE_PRIVATE);
 			if (alarmFragment.getString(STATE_URI, null)!=null) {
@@ -184,13 +185,21 @@ public class MainActivity extends Activity
 				AlarmToRing_Datas.add(tempData);
 			}
 		}
+	    
 	    //delete the AlarmToRing_Datas which doesn't ring.
 	    if (AlarmToRing_Datas.size() !=0 ) 
 	    	for (int i = 0; i < AlarmToRing_Datas.size(); i++)
 	    		if (!AlarmToRing_Datas.get(i).buttonOn) 
-	    			AlarmToRing_Datas.remove(i);
+	    			{
+	    				AlarmToRing_Datas.remove(i);
+	    				i--;
+	    			}
 	    
 	 
+	    if (AlarmService.getServiceInstance() !=null ) {
+			AlarmService instance = AlarmService.getServiceInstance();
+			instance.onDestroy();
+		}
 	    //sort the AlarmToRing_Datas according to time sequence.
 	    int len = AlarmToRing_Datas.size();
 	    if (len != 0) {
@@ -226,8 +235,6 @@ public class MainActivity extends Activity
 				Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 			}
 		}
-	    
-
 	    
 	}
 	
