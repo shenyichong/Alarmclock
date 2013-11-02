@@ -1,5 +1,7 @@
 package com.firstapp.alarmclock;
 
+import java.util.Vector;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -18,6 +20,7 @@ public class AlarmService extends Service{
 	public static int AlarmRingNum;
 	
 	private static AlarmService instance;
+	private static Vector<PendingIntent> pendingIntentVector = new Vector<PendingIntent>();
 	
 	public static AlarmService getServiceInstance(){
 		return instance;
@@ -30,16 +33,20 @@ public class AlarmService extends Service{
 	    // stopped, so return sticky.
 		instance = this;
 		Intent i=new Intent(this, MyAlarmReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
-		
 		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		//cancel all the Alarm services that set before.
-		alarmMgr.cancel(pendingIntent);
 		
+		//cancel all the Alarm services that set before.
+		for (int j = 0; j < pendingIntentVector.size(); j++) {
+			alarmMgr.cancel(PendingIntent.getBroadcast(this, j, i, 0));
+		}
+		pendingIntentVector.clear();
+		//set new Alarms.
 		AlarmRingNum = MainActivity.AlarmToRing_Datas.size();
 		for (int j = 0; j < AlarmRingNum; j++) {
-			alarmMgr.set(AlarmManager.RTC_WAKEUP,MainActivity.AlarmToRing_Datas.get(j).TimeInMills,pendingIntent);
+			pendingIntentVector.add(PendingIntent.getBroadcast(this, j, i, 0));
+			alarmMgr.set(AlarmManager.RTC_WAKEUP,MainActivity.AlarmToRing_Datas.get(j).TimeInMills,pendingIntentVector.get(j));
 		}
+		
 		
 		
 		notebuilder.setSmallIcon(R.drawable.notification_bar);
