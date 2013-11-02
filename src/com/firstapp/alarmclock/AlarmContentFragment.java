@@ -274,14 +274,13 @@ public class AlarmContentFragment extends Fragment{
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
 	    
-	    
 	}
 	
 	
 	/*start the alarm*/
 	public void setRing(View view){
 		
-		boolean on = ((ToggleButton) view).isChecked();
+		buttonOn = ((ToggleButton) view).isChecked();
 		
 		Calendar setTime = Calendar.getInstance(); 
 		setTime.set(Year, Month, Day, Hour, Minute,0); 
@@ -290,7 +289,7 @@ public class AlarmContentFragment extends Fragment{
 		long set=setTime.getTimeInMillis();
 		boolean setORnot=(now < set);
 		
-		if (on) {
+		if (buttonOn) {
 			if (!setORnot) {
 				Day=Day+1;
 				setTime.set(Year, Month, Day, Hour, Minute,0); 

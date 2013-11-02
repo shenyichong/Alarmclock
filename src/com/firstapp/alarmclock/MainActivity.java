@@ -219,7 +219,7 @@ public class MainActivity extends Activity
 			if (hoursLeft == 0 && minutesLeft == 0){
 				Toast.makeText(this, getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 			}
-			else if (minutesLeft != 0 ){
+			else if (hoursLeft == 0 ){
 				Toast.makeText(this, getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
 			}
 			else {
