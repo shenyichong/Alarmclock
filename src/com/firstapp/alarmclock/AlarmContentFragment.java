@@ -110,6 +110,7 @@ public class AlarmContentFragment extends Fragment{
 			buttonOn=false;
 			buttonVibrate=false;
 			alarm_name=getResources().getString(R.string.ringcontent_blank);
+			TimeInMills= (long)0;
 		}
 		else{
 			Hour =settings.getInt(STATE_HOUR,0);
