@@ -19,7 +19,7 @@
 	<string name="setvibrate">震动</string>
 	<string name="description">这是干嘛的，这是图像</string>
 	<string name="defaultRing">默认铃声</string>
-	<string name="notificationText1">闹铃将于</string>
+	<string name="notificationText1">此闹铃将于</string>
 	<string name="notificationText2">点</string>
 	<string name="notificationText3">分响起</string>
 	<string name="notificationText4">小时</string>

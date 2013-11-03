@@ -25,7 +25,6 @@ import android.widget.ToggleButton;
 
 public class AlarmContentFragment extends Fragment{
 	
-	public static final String TIMETOSEND = "TIME";
 
 	private static final String STATE_HOUR = "HOUR";
 
@@ -40,12 +39,17 @@ public class AlarmContentFragment extends Fragment{
 	private static final String STATE_VIBRATE = "VIBRATE";
 
 	private static final String ALARM_NAME = "NAME";
+
+	private static final String STATE_DAY = "DAY";
+	
+	private static final String STATE_TIMEINMILLS = "TIMEINMILLS";
 	
 	static int contentFragNum;
 	static String preferencesNameString;
 	
 	static int hourIntoflag=0;
 	static String ringtone_name;
+	static Long TimeInMills;
 	static int Hour;
 	static int Minute;
 	static int Year;
@@ -78,7 +82,7 @@ public class AlarmContentFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.activity_main,container,false);
     }
 	
 	public void onActivityCreated(Bundle savedInstanceState) {  
@@ -115,6 +119,7 @@ public class AlarmContentFragment extends Fragment{
 		    buttonOn=settings.getBoolean(STATE_BUTTON, false);
 		    buttonVibrate=settings.getBoolean(STATE_VIBRATE, false);
 		    alarm_name=settings.getString(ALARM_NAME,getResources().getString(R.string.ringcontent_blank));
+		    TimeInMills = settings.getLong(STATE_TIMEINMILLS,0);
 		}
 		final Calendar c = Calendar.getInstance();
 		Year = c.get(Calendar.YEAR);
@@ -247,10 +252,17 @@ public class AlarmContentFragment extends Fragment{
 	public void onStop() {
 		// need to test the sequence of Activity's onStop and this onStop
 		super.onStop();
+		
+		if (buttonOn) {
+	    	setRing(getActivity().findViewById(R.id.Ring_set));
+		}
+		
 		//store data in the class AppData
 		preferencesNameString = "Pref_"+String.valueOf(contentFragNum);
         SharedPreferences settings = getActivity().getSharedPreferences(preferencesNameString,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
+        editor.putLong(STATE_TIMEINMILLS, TimeInMills);
+        editor.putInt(STATE_DAY, Day);
         editor.putInt(STATE_HOUR, Hour);
 	    editor.putInt(STATE_MINUTE, Minute);
 	    editor.putString(STATE_URI, ringtone_Uri.toString());
@@ -263,37 +275,13 @@ public class AlarmContentFragment extends Fragment{
 	    editor.putBoolean(STATE_VIBRATE, buttonVflag.isChecked());
 	    editor.commit();
 	    
-	    //show how long will take before the alarm goes off.
-	    Calendar c= Calendar.getInstance();
-		long now=c.getTimeInMillis();
-		Calendar setTime = Calendar.getInstance(); 
-		setTime.set(Year, Month, Day, Hour, Minute,0); 
-		long set=setTime.getTimeInMillis();
-		if (now>set) {
-			setTime.set(Year, Month, Day+1, Hour, Minute,0); 
-			set=setTime.getTimeInMillis();
-		}
-		int hoursLeft=(int)Math.floor((set-now)/1000/3600);
-		long mod=(set-now)%(1000*3600);
-		int minutesLeft=(int)Math.floor(mod/1000/60);
-		if (minutesLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
-			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+getResources().getString(R.string.notificationText6)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
-		}
-		else if (hoursLeft == 0 && ((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
-			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
-		}
-		else if(((ToggleButton)getActivity().findViewById(R.id.Ring_set)).isChecked()){
-			Toast.makeText(getActivity(), getResources().getString(R.string.notificationText1)+String.valueOf(hoursLeft)+getResources().getString(R.string.notificationText4)+String.valueOf(minutesLeft)+getResources().getString(R.string.notificationText5), Toast.LENGTH_SHORT).show();
-		}
-		//set the Alarm.
-		setRing(getActivity().findViewById(R.id.Ring_set));
 	}
 	
 	
 	/*start the alarm*/
 	public void setRing(View view){
 		
-		boolean on = ((ToggleButton) view).isChecked();
+		buttonOn = ((ToggleButton) view).isChecked();
 		
 		Calendar setTime = Calendar.getInstance(); 
 		setTime.set(Year, Month, Day, Hour, Minute,0); 
@@ -301,23 +289,19 @@ public class AlarmContentFragment extends Fragment{
 		long now=nowTime.getTimeInMillis();
 		long set=setTime.getTimeInMillis();
 		boolean setORnot=(now < set);
-		Intent toService = new Intent(getActivity(),AlarmService.class);
 		
-		if (on) {
-			if (setORnot) {
-				 // turn on the alarm 
-				toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
-				getActivity().startService(toService);
-			}else {
-				setTime.set(Year, Month, Day+1, Hour, Minute,0); 
-				toService.putExtra(TIMETOSEND, setTime.getTimeInMillis());	
-				getActivity().startService(toService);
+		if (buttonOn) {
+			if (!setORnot) {
+				Day=Day+1;
+				setTime.set(Year, Month, Day, Hour, Minute,0); 
+				set=setTime.getTimeInMillis();
 			}
+		}else {
+			//do something
+			
 		}
-		else {
-	        // turn off the alarm
-	    	getActivity().stopService(toService);
-		}
+		
+		TimeInMills = set;
 	}
     
 	private SeekBar.OnSeekBarChangeListener mSeekBarChangeListener1 = new SeekBar.OnSeekBarChangeListener(){
@@ -361,7 +345,6 @@ public class AlarmContentFragment extends Fragment{
 			}
 			
 			hour_minute_View.setText(str);
-			
 			
 		}
 

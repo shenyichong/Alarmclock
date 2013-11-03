@@ -1,6 +1,5 @@
 package com.firstapp.alarmclock;
 
-import java.util.ArrayList;
 
 import com.firstapp.alarmclock.R;
 
