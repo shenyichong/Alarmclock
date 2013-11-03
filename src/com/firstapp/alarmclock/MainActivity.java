@@ -2,7 +2,6 @@ package com.firstapp.alarmclock;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Vector;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -14,14 +13,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
-import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity 
 			implements SampleListFragment.OnItemClickedListener
+					  ,SampleListFragment.CheckBoxListerner
 					  ,AlarmContentFragment.ClockChangeListener
+					  ,AlarmContentFragment.CheckboxListener
 			          ,clockNameDialog.clockNameChangeListener{
 	
 	private SlidingMenu slidingmenu;
@@ -31,7 +30,7 @@ public class MainActivity extends Activity
 	private static final String MENU_FLAG = "MENU_FLAG";
 	private static final String CUR_MENU_NUM = "CURRENT_MENU_NUMBER";
 	private static final String ALARM_NAME = "ALARM_NAME_";
-
+	private static final String ALARM_CHECKBOX = "ALARM_CHECKBOX_";
 	
 	private static final String STATE_BUTTON =  "BUTTON";
 	private static final String STATE_HOUR = "HOUR";
@@ -45,8 +44,8 @@ public class MainActivity extends Activity
 	static int menu_number;
 	static int cur_menu_number;
 	public static ArrayList<String> AlarmNames = new ArrayList<String>();
+	public static ArrayList<Boolean> AlarmCheckbox = new ArrayList<Boolean>();
 	public static ArrayList<Long> AlarmTimes = new ArrayList<Long>();
-	
 	public static ArrayList<AppData> AlarmToRing_Datas = new ArrayList<AppData>();
 	
 	@Override
@@ -61,14 +60,16 @@ public class MainActivity extends Activity
 			cur_menu_number=1;
 			//initialize the content of the sliding menu
 			for (int i = 0; i < menu_number; i++) {
-	        	AlarmNames.add("00:00"+" "+getString(R.string.ringcontent_blank));
+	        	AlarmNames.add(i,"00:00"+" "+getString(R.string.ringcontent_blank));
+	        	AlarmCheckbox.add(i, false);
 			}
 		}else {
 			menu_number=globalSettings.getInt(MENU_NUM, 3);
 			cur_menu_number=globalSettings.getInt(CUR_MENU_NUM, 1);
 			//initialize the content of the sliding menu
 			for (int i = 0; i < menu_number; i++) {
-				AlarmNames.add(globalSettings.getString(ALARM_NAME+String.valueOf(i), "00:00"+" "+getString(R.string.ringcontent_blank)));
+				AlarmNames.add(i,globalSettings.getString(ALARM_NAME+String.valueOf(i), "00:00"+" "+getString(R.string.ringcontent_blank)));
+				AlarmCheckbox.add(i, globalSettings.getBoolean(ALARM_CHECKBOX+String.valueOf(i),false));
 			}
 		}
 		//create the vector preferenceVector to store different sharedPreference file names.
@@ -112,6 +113,11 @@ public class MainActivity extends Activity
 		slidingmenu.showContent();
 	}
 	
+	public void onCheckBoxClicked(boolean checkbox){
+		
+	}
+	
+	
 	//Implementation of the interface of AlarmContentFragment.
 	public void onClockChange(String str){
 		SampleListFragment listFrag = (SampleListFragment)getFragmentManager().findFragmentByTag("samplelistfragment");
@@ -119,7 +125,7 @@ public class MainActivity extends Activity
 		AlarmNames.set(cur_menu_number-1, str);
 		adapter.clear();
 		for (int i = 0; i < menu_number; i++) { 
-            adapter.add(listFrag.new SampleItem(AlarmNames.get(i), R.drawable.notify_button));  
+            adapter.add(listFrag.new SampleItem(AlarmNames.get(i), R.drawable.notify_button, AlarmCheckbox.get(i).booleanValue()));  
         }
 		listFrag.setListAdapter(adapter);
 	}
@@ -130,8 +136,19 @@ public class MainActivity extends Activity
 		AlarmNames.set(cur_menu_number-1, str);
 		adapter.clear();
 		for (int i = 0; i < menu_number; i++) { 
-            adapter.add(listFrag.new SampleItem(AlarmNames.get(i), R.drawable.notify_button));  
+            adapter.add(listFrag.new SampleItem(AlarmNames.get(i), R.drawable.notify_button,AlarmCheckbox.get(i).booleanValue()));  
         }
+		listFrag.setListAdapter(adapter);
+	}
+	
+	public void onCheckboxChange(boolean checkbox){
+		SampleListFragment listFrag = (SampleListFragment)getFragmentManager().findFragmentByTag("samplelistfragment");
+		SampleListFragment.SampleAdapter adapter = (SampleListFragment.SampleAdapter)listFrag.getListAdapter();
+		AlarmCheckbox.set(cur_menu_number-1, checkbox);
+		adapter.clear();
+		for (int i = 0; i < menu_number; i++) {
+			adapter.add(listFrag.new SampleItem(AlarmNames.get(i), R.drawable.notify_button,AlarmCheckbox.get(i).booleanValue()));
+		}
 		listFrag.setListAdapter(adapter);
 	}
 	@Override  
@@ -164,6 +181,7 @@ public class MainActivity extends Activity
 	    Total_editor.putInt(CUR_MENU_NUM, cur_menu_number);
 	    for (int i = 0; i < menu_number; i++) {
 			Total_editor.putString(ALARM_NAME+String.valueOf(i), AlarmNames.get(i));
+			Total_editor.putBoolean(ALARM_CHECKBOX+String.valueOf(i), AlarmCheckbox.get(i));
 		}
 	    Total_editor.commit();
 	    

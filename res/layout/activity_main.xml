@@ -104,8 +104,7 @@
 	       	android:textSize="18sp"
 	        android:hint="@string/ringcontent_blank"
 	        android:clickable="true"
-	        android:gravity="center"
-	        android:onClick="fillinName" />
+	        android:gravity="center" />
 	    
 	</LinearLayout>
 	

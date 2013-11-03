@@ -64,8 +64,12 @@ public class AlarmContentFragment extends Fragment{
 	public interface ClockChangeListener{
 		public void onClockChange(String TimeShown);
 	}
-	
 	ClockChangeListener mClockListener;
+	
+	public interface CheckboxListener{
+		public void onCheckboxChange(boolean checkbox);
+	}
+	CheckboxListener mCheckboxListener;
 	
 	@Override
     public void onAttach(Activity activity) {
@@ -75,6 +79,11 @@ public class AlarmContentFragment extends Fragment{
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement ClockChangeListener");
         }
+        try {
+        	mCheckboxListener = (CheckboxListener) activity;
+		} catch (Exception e) {
+			throw new ClassCastException(activity.toString() + " must implement CheckboxListener");
+		}
     }
 	
 	
@@ -283,6 +292,8 @@ public class AlarmContentFragment extends Fragment{
 	public void setRing(View view){
 		
 		buttonOn = ((ToggleButton) view).isChecked();
+		
+		mCheckboxListener.onCheckboxChange(buttonOn);
 		
 		Calendar setTime = Calendar.getInstance(); 
 		setTime.set(Year, Month, Day, Hour, Minute,0); 
