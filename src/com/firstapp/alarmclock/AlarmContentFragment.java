@@ -253,8 +253,7 @@ public class AlarmContentFragment extends Fragment{
 	}
 	
 	public void setVibrate(View view){
-		boolean on = ((ToggleButton) view).isChecked();
-		buttonVibrate=on;
+		buttonVibrate = ((ToggleButton) view).isChecked();
 	}
 	
 	@Override
@@ -263,7 +262,21 @@ public class AlarmContentFragment extends Fragment{
 		super.onStop();
 		
 		if (buttonOn) {
-	    	setRing(getActivity().findViewById(R.id.Ring_set));
+	    	Calendar setTime = Calendar.getInstance(); 
+			setTime.set(Year, Month, Day, Hour, Minute,0); 
+			Calendar nowTime = Calendar.getInstance();
+			long now=nowTime.getTimeInMillis();
+			long set=setTime.getTimeInMillis();
+			boolean setORnot=(now < set);
+			if (buttonOn) {
+				if (!setORnot) {
+					Day=Day+1;
+					setTime.set(Year, Month, Day, Hour, Minute,0); 
+					set=setTime.getTimeInMillis();
+				}
+			}
+			TimeInMills = set;
+
 		}
 		
 		//store data in the class AppData

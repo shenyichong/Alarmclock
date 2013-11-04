@@ -57,21 +57,16 @@ public class SampleListFragment extends ListFragment{
             adapter.add(new SampleItem(MainActivity.AlarmNames.get(i), R.drawable.notify_button,MainActivity.AlarmCheckbox.get(i)));  
         }
         setListAdapter(adapter); 
-        
-        //register the checkbox click listener
-        CheckBox checkboxView = (CheckBox)getActivity().findViewById(R.id.row_checkbox);
-        checkboxView.setOnClickListener(new View.OnClickListener() {
-  		    @Override
-  		    public void onClick(View view) {
-  		    	setCheckBox(view);
-  		    }
-  		});
+ 
     }
 	
 	public void setCheckBox(View view){
 		CheckBox checkboxView = (CheckBox) view;
 		int position = (Integer)checkboxView.getTag();
 		boolean checkbox = checkboxView.isChecked();
+		
+		MainActivity.AlarmCheckbox.set(position,checkbox);
+		
 		mCheckBoxListerner.onCheckBoxClicked(checkbox,position);
 	}
 	
@@ -109,9 +104,16 @@ public class SampleListFragment extends ListFragment{
             icon.setImageResource(getItem(position).iconRes);  
             TextView title = (TextView) convertView.findViewById(R.id.row_title);  
             title.setText(getItem(position).tag);  
-            CheckBox checkBox = (CheckBox )convertView.findViewById(R.id.row_checkbox);
+            CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.row_checkbox);
             checkBox.setChecked(getItem(position).checkbox);
             checkBox.setTag(position);
+            //register the checkbox click listener
+            checkBox.setOnClickListener(new View.OnClickListener() {
+      		    @Override
+      		    public void onClick(View view) {
+      		    	setCheckBox(view);
+      		    }
+      		});
             
             return convertView;  
         } 

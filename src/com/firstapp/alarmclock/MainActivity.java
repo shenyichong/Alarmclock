@@ -92,7 +92,7 @@ public class MainActivity extends Activity
 		
         //setting up the distribute of sliding menu 
         slidingmenu = new SlidingMenu(this);  
-        slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);  
+        slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);  
         slidingmenu.setShadowWidthRes(R.dimen.shadow_width);  
         slidingmenu.setShadowDrawable(R.layout.shadow);  
         slidingmenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
@@ -121,6 +121,7 @@ public class MainActivity extends Activity
 			ToggleButton viewButton = (ToggleButton)findViewById(R.id.Ring_set);
 			viewButton.setChecked(checkbox);
 		}else {
+			
 			SharedPreferences changeCheckbox = getSharedPreferences(preferenceVector.get(position),Context.MODE_PRIVATE);
 	        SharedPreferences.Editor editor = changeCheckbox.edit();
 	        editor.putBoolean(STATE_BUTTON, checkbox);
@@ -162,6 +163,7 @@ public class MainActivity extends Activity
 		for (int i = 0; i < menu_number; i++) {
 			adapter.add(listFrag.new SampleItem(AlarmNames.get(i), R.drawable.notify_button,AlarmCheckbox.get(i).booleanValue()));
 		}
+		
 		listFrag.setListAdapter(adapter);
 	}
 	@Override  
