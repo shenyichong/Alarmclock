@@ -83,6 +83,11 @@ public class MainActivity extends Activity
 			preferenceVector.add(eachString);
 		}
 		
+		 if (AlarmService.getServiceInstance() !=null ) {
+				AlarmService instance = AlarmService.getServiceInstance();
+				instance.onDestroy();
+			}
+		
         initSlidingMenu();  
 	}
 	 
@@ -228,11 +233,6 @@ public class MainActivity extends Activity
 	    				i--;
 	    			}
 	    
-	 
-	    if (AlarmService.getServiceInstance() !=null ) {
-			AlarmService instance = AlarmService.getServiceInstance();
-			instance.onDestroy();
-		}
 	    //sort the AlarmToRing_Datas according to time sequence.
 	    int len = AlarmToRing_Datas.size();
 	    if (len != 0) {
