@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class AlarmContentFragment extends Fragment{
@@ -288,7 +287,7 @@ public class AlarmContentFragment extends Fragment{
 	}
 	
 	
-	/*start the alarm*/
+	//prepare to set the alarm 
 	public void setRing(View view){
 		
 		buttonOn = ((ToggleButton) view).isChecked();

@@ -3,6 +3,7 @@ package com.firstapp.alarmclock;
 
 import com.firstapp.alarmclock.R;
 
+import android.R.integer;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
@@ -26,7 +27,7 @@ public class SampleListFragment extends ListFragment{
 	OnItemClickedListener mListener;
 	
 	public interface CheckBoxListerner{
-		public void onCheckBoxClicked(boolean checkbox);
+		public void onCheckBoxClicked(boolean checkbox,int position);
 	}
 	CheckBoxListerner mCheckBoxListerner;
 	
@@ -38,6 +39,11 @@ public class SampleListFragment extends ListFragment{
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement OnItemClickedListener");
         }
+        try {
+        	mCheckBoxListerner = (CheckBoxListerner)activity;
+		} catch (Exception e) {
+			throw new ClassCastException(activity.toString() + " must implement CheckBoxListerner");
+		}
         
     }
 	
@@ -56,16 +62,17 @@ public class SampleListFragment extends ListFragment{
         CheckBox checkboxView = (CheckBox)getActivity().findViewById(R.id.row_checkbox);
         checkboxView.setOnClickListener(new View.OnClickListener() {
   		    @Override
-  		    public void onClick(View v) {
-  		    	setCheckBox(v);
+  		    public void onClick(View view) {
+  		    	setCheckBox(view);
   		    }
   		});
     }
 	
-	public void setCheckBox(View v){
-		CheckBox checkboxView = (CheckBox) v;
+	public void setCheckBox(View view){
+		CheckBox checkboxView = (CheckBox) view;
+		int position = (Integer)checkboxView.getTag();
 		boolean checkbox = checkboxView.isChecked();
-		mCheckBoxListerner.onCheckBoxClicked(checkbox);
+		mCheckBoxListerner.onCheckBoxClicked(checkbox,position);
 	}
 	
 	@Override
@@ -104,6 +111,8 @@ public class SampleListFragment extends ListFragment{
             title.setText(getItem(position).tag);  
             CheckBox checkBox = (CheckBox )convertView.findViewById(R.id.row_checkbox);
             checkBox.setChecked(getItem(position).checkbox);
+            checkBox.setTag(position);
+            
             return convertView;  
         } 
     } 

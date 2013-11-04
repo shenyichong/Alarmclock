@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 
 public class MainActivity extends Activity 
@@ -39,6 +40,7 @@ public class MainActivity extends Activity
 	private static final String STATE_URI = "URI";
 	private static final String STATE_DAY = "DAY";
 	private static final String STATE_TIMEINMILLS = "TIMEINMILLS";
+	private static final String STATE_MUSIC = "MUSIC";;
 	
 	
 	static int menu_number;
@@ -47,7 +49,7 @@ public class MainActivity extends Activity
 	public static ArrayList<Boolean> AlarmCheckbox = new ArrayList<Boolean>();
 	public static ArrayList<Long> AlarmTimes = new ArrayList<Long>();
 	public static ArrayList<AppData> AlarmToRing_Datas = new ArrayList<AppData>();
-	
+	public static Vector<String> preferenceVector = new Vector<String>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,8 +74,8 @@ public class MainActivity extends Activity
 				AlarmCheckbox.add(i, globalSettings.getBoolean(ALARM_CHECKBOX+String.valueOf(i),false));
 			}
 		}
+		
 		//create the vector preferenceVector to store different sharedPreference file names.
-		Vector<String> preferenceVector = new Vector<String>();
 		String defaultString = "Pref_";
 		String eachString;
 		for (int i = 0; i < menu_number; i++) {
@@ -86,7 +88,7 @@ public class MainActivity extends Activity
 	 
 	private void initSlidingMenu() {  
         //setting up the main content View
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, new AlarmContentFragment()).commit(); 
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, new AlarmContentFragment(),"alarmcontentfragment").commit(); 
 		
         //setting up the distribute of sliding menu 
         slidingmenu = new SlidingMenu(this);  
@@ -113,8 +115,19 @@ public class MainActivity extends Activity
 		slidingmenu.showContent();
 	}
 	
-	public void onCheckBoxClicked(boolean checkbox){
-		
+	public void onCheckBoxClicked(boolean checkbox,int position){
+		if (position+1 == cur_menu_number) {
+			AlarmContentFragment.buttonOn = checkbox;
+			ToggleButton viewButton = (ToggleButton)findViewById(R.id.Ring_set);
+			viewButton.setChecked(checkbox);
+		}else {
+			SharedPreferences changeCheckbox = getSharedPreferences(preferenceVector.get(position),Context.MODE_PRIVATE);
+	        SharedPreferences.Editor editor = changeCheckbox.edit();
+	        editor.putBoolean(STATE_BUTTON, checkbox);
+	        // set the STATE_MUSIC in the Pref_n.xml in order to show that Pref_n.xml exists.
+	        editor.putString(STATE_MUSIC, getResources().getString(R.string.ringcontent_blank));
+	        editor.commit();
+		}
 	}
 	
 	
