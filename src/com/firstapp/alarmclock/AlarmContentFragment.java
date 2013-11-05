@@ -268,15 +268,12 @@ public class AlarmContentFragment extends Fragment{
 			long now=nowTime.getTimeInMillis();
 			long set=setTime.getTimeInMillis();
 			boolean setORnot=(now < set);
-			if (buttonOn) {
-				if (!setORnot) {
-					Day=Day+1;
-					setTime.set(Year, Month, Day, Hour, Minute,0); 
-					set=setTime.getTimeInMillis();
-				}
+			if (!setORnot) {
+				Day=Day+1;
+				setTime.set(Year, Month, Day, Hour, Minute,0); 
+				set=setTime.getTimeInMillis();
 			}
 			TimeInMills = set;
-
 		}
 		
 		//store data in the class AppData

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Vector;
 
+import com.firstapp.alarmclock.R.string;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.net.Uri;
@@ -125,14 +126,55 @@ public class MainActivity extends Activity
 			AlarmContentFragment.buttonOn = checkbox;
 			ToggleButton viewButton = (ToggleButton)findViewById(R.id.Ring_set);
 			viewButton.setChecked(checkbox);
-		}else {
-			
+		}else{
 			SharedPreferences changeCheckbox = getSharedPreferences(preferenceVector.get(position),Context.MODE_PRIVATE);
-	        SharedPreferences.Editor editor = changeCheckbox.edit();
-	        editor.putBoolean(STATE_BUTTON, checkbox);
-	        // set the STATE_MUSIC in the Pref_n.xml in order to show that Pref_n.xml exists.
-	        editor.putString(STATE_MUSIC, getResources().getString(R.string.ringcontent_blank));
-	        editor.commit();
+			SharedPreferences.Editor editor = changeCheckbox.edit();
+			if(changeCheckbox.getString(STATE_MUSIC, null) == null)
+			//the Item first been clicked,TimeInMills is 0,and need to be calculated here.
+			{	final Calendar c = Calendar.getInstance();
+				int Day = c.get(Calendar.DAY_OF_MONTH);
+				
+				editor.putInt(STATE_DAY, Day);
+				int Minute=0;
+				editor.putInt(STATE_MINUTE, Minute);
+				int Hour=0;
+				editor.putInt(STATE_HOUR, Hour);
+				Uri ringtone_Uri=Uri.parse("content://settings/system/ringtone");
+				editor.putString(STATE_URI, ringtone_Uri.toString());
+				String music_name=getResources().getString(R.string.defaultRing);
+				editor.putString(STATE_MUSIC, music_name);
+				boolean buttonVibrate=false;
+				editor.putBoolean(STATE_VIBRATE, buttonVibrate);
+				String alarm_name=getResources().getString(R.string.ringcontent_blank);
+				editor.putString(ALARM_NAME, alarm_name);
+				
+				editor.putBoolean(STATE_BUTTON, checkbox);
+				Long TimeInMills=(long)0;
+				if (checkbox) {
+					int Year = c.get(Calendar.YEAR);
+					int Month = c.get(Calendar.MONTH);
+					
+					Calendar setTime = Calendar.getInstance(); 
+					setTime.set(Year, Month, Day, Hour, Minute,0); 
+					Calendar nowTime = Calendar.getInstance();
+					long now=nowTime.getTimeInMillis();
+					long set=setTime.getTimeInMillis();
+					boolean setORnot=(now < set);
+					if (!setORnot) {
+						Day=Day+1;
+						setTime.set(Year, Month, Day, Hour, Minute,0); 
+						set=setTime.getTimeInMillis();
+					}
+					TimeInMills = set;
+				}
+				editor.putLong(STATE_TIMEINMILLS, TimeInMills);
+				editor.commit();
+			}else 
+			//the Item had been clicked before,TimeInMills mustn't be 0.
+			{
+				editor.putBoolean(STATE_BUTTON, checkbox);
+		        editor.commit();
+			}
 		}
 	}
 	
@@ -210,7 +252,7 @@ public class MainActivity extends Activity
 	    AlarmToRing_Datas.clear();
 	    for (int i = 0; i < menu_number; i++) {
 	    	SharedPreferences alarmFragment = getSharedPreferences("Pref_"+String.valueOf(i+1), Context.MODE_PRIVATE);
-			if (alarmFragment.getString(STATE_URI, null)!=null) {
+			if (alarmFragment.getString(STATE_MUSIC, null)!=null) {
 				AppData tempData = new AppData();
 				tempData.TimeInMills = alarmFragment.getLong(STATE_TIMEINMILLS, (long)0);
 				tempData.Day = alarmFragment.getInt(STATE_DAY, 1);
