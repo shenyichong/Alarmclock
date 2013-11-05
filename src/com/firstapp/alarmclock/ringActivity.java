@@ -26,6 +26,8 @@ import android.view.WindowManager;
 public class ringActivity extends Activity{
 	
 	private static final String STATE_BUTTON = "BUTTON";
+	private static final String GLO_SETTINGS="GLOBAL_SETTINGS";
+	private static final String ALARM_CHECKBOX = "ALARM_CHECKBOX_";
 	private static MediaPlayer mediaPlayer;
 	private static Vibrator vibrator;
 	private static AudioManager volMgr;
@@ -156,7 +158,14 @@ public class ringActivity extends Activity{
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(STATE_BUTTON, false);
         editor.commit();
-		
+        
+        SharedPreferences globalSettings =  getSharedPreferences(GLO_SETTINGS,Context.MODE_PRIVATE);
+        SharedPreferences.Editor globalEditor = globalSettings.edit();
+        globalEditor.putBoolean(ALARM_CHECKBOX+String.valueOf(cur_AlarmRingNum), false);
+        globalEditor.commit();
+        
+        
+        
         AlarmService runningService = AlarmService.getServiceInstance();
         if (cur_AlarmRingNum+1 < MainActivity.AlarmToRing_Datas.size()) {
         	//set new notification for the next alarm

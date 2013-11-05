@@ -41,7 +41,7 @@ public class MainActivity extends Activity
 	private static final String STATE_URI = "URI";
 	private static final String STATE_DAY = "DAY";
 	private static final String STATE_TIMEINMILLS = "TIMEINMILLS";
-	private static final String STATE_MUSIC = "MUSIC";;
+	private static final String STATE_MUSIC = "MUSIC";
 	
 	
 	static int menu_number;
