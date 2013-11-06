@@ -2,7 +2,7 @@ package com.firstapp.alarmclock;
 
 import java.util.Calendar;
 
-
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,13 +10,11 @@ import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 //import android.widget.TimePicker;
@@ -26,6 +24,8 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 	
+	private SlidingMenu slidingmenu;
+	
 	private static final String STATE_HOUR = "HOUR";
 	private static final String STATE_MINUTE = "MINUTE";
 	private static final String STATE_URI = "URI";
@@ -33,7 +33,6 @@ public class MainActivity extends Activity {
 	private static final String STATE_MUSIC = "MUSIC";
 	private static final String STATE_BUTTON = "BUTTON";
 	private static final String STATE_VIBRATE= "VIBRATE";
-//	private static final int TIME_PICKER_INTERVAL = 5;
 	public static final String TIMETOSEND = "TIME";
 	private static final String ALARM_NAME = "NAME";
 	
@@ -151,7 +150,6 @@ public class MainActivity extends Activity {
 		@Override
 		public void onStartTrackingTouch(SeekBar seekBar) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
@@ -161,12 +159,11 @@ public class MainActivity extends Activity {
 		}
 	};
 	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+        
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME,0);
 		if(settings.getString(STATE_MUSIC, null) == null){
 			final Calendar c = Calendar.getInstance();
@@ -238,15 +235,52 @@ public class MainActivity extends Activity {
 		ringname.setText(music_name);
 		buttonflag.setChecked(buttonOn);
 		buttonVflag.setChecked(buttonVibrate);
+		
+		//initialize the SlidingMenu menu
+        initSlidingMenu();  
 	}
-
+	 
+	private void initSlidingMenu() {  
+        //setting up the main content View
+        //setContentView(R.layout.content_frame);  
+        //getFragmentManager().beginTransaction().replace(R.id.content_frame, new SampleListFragment()).commit(); 
 	
-	@Override
-	public void onResume(){
-		super.onResume();
-		//Set AlarmClock
-	//	this.setRing(this.findViewById(R.id.Ring_set));
-	}
+        //setting up the distribute of sliding menu 
+        slidingmenu = new SlidingMenu(this);  
+        slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);  
+        slidingmenu.setShadowWidthRes(R.dimen.shadow_width);  
+        slidingmenu.setShadowDrawable(R.layout.shadow);  
+        slidingmenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);  
+        slidingmenu.setFadeDegree(0.35f);  
+        slidingmenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);  
+        
+        //initialize the content of the sliding menu
+        SampleListFragment samplist = new SampleListFragment();
+        samplist.ListNum=3;
+        for (int i = 0; i < samplist.ListNum; i++) {
+        	samplist.AlarmNames.add("00:00");
+		}
+        //setting up the sliding menu's view  
+        slidingmenu.setMenu(R.layout.menu_frame);     
+        getFragmentManager().beginTransaction().replace(R.id.menu_frame,samplist).commit();  
+    } 
+	@Override  
+	public void onBackPressed() {  
+       // click return key to return the sliding menu
+       if (slidingmenu.isMenuShowing()) {  
+    	   slidingmenu.showContent();  
+       } else {  
+           super.onBackPressed();  
+       }  
+	} 
+	
+	//@Override
+	//public void onResume(){
+	//	super.onResume();
+	//	//Set AlarmClock
+	////	this.setRing(this.findViewById(R.id.Ring_set));
+	//}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

@@ -23,7 +23,7 @@ public class ringActivity extends Activity{
 	private static Vibrator vibrator;
 	private static AudioManager volMgr;
 	private static int RINGERMODE; 
-	
+	private static int volume;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +44,9 @@ public class ringActivity extends Activity{
 				volMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 				break;
 		}
+		volume = volMgr.getStreamVolume(AudioManager.STREAM_MUSIC);
+		int setVolume = (int) (volMgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*0.7);
+		volMgr.setStreamVolume(AudioManager.STREAM_MUSIC,setVolume, 0);
 		
 		//set Vibration
 		vibrator=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
@@ -127,6 +130,7 @@ public class ringActivity extends Activity{
 				volMgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 				break;
 		}
+		volMgr.setStreamVolume(AudioManager.STREAM_MUSIC,volume, 0);
 		volMgr=null;
 		
 		this.finish();
