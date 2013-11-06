@@ -57,7 +57,6 @@ public class SampleListFragment extends ListFragment{
             adapter.add(new SampleItem(MainActivity.AlarmNames.get(i), R.drawable.notify_button,MainActivity.AlarmCheckbox.get(i)));  
         }
         setListAdapter(adapter); 
- 
     }
 	
 	public void setCheckBox(View view){
@@ -94,12 +93,11 @@ public class SampleListFragment extends ListFragment{
 	  
         public SampleAdapter(Context context) {  
             super(context, 0);  
-        }  
-  
+        } 
         public View getView(int position, View convertView, ViewGroup parent) {  
             if (convertView == null) {  
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.row, null);  
-            }  
+            } 
             ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);  
             icon.setImageResource(getItem(position).iconRes);  
             TextView title = (TextView) convertView.findViewById(R.id.row_title);  
@@ -114,7 +112,6 @@ public class SampleListFragment extends ListFragment{
       		    	setCheckBox(view);
       		    }
       		});
-            
             return convertView;  
         } 
     } 

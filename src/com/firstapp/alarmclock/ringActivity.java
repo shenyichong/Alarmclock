@@ -159,12 +159,10 @@ public class ringActivity extends Activity{
         editor.putBoolean(STATE_BUTTON, false);
         editor.commit();
         
-        SharedPreferences globalSettings =  getSharedPreferences(GLO_SETTINGS,Context.MODE_PRIVATE);
+        SharedPreferences globalSettings = this.getSharedPreferences(GLO_SETTINGS,Context.MODE_PRIVATE);
         SharedPreferences.Editor globalEditor = globalSettings.edit();
-        globalEditor.putBoolean(ALARM_CHECKBOX+String.valueOf(cur_AlarmRingNum), false);
+        globalEditor.putBoolean(ALARM_CHECKBOX+String.valueOf(tempData.FragmentNum-1),false);
         globalEditor.commit();
-        
-        
         
         AlarmService runningService = AlarmService.getServiceInstance();
         if (cur_AlarmRingNum+1 < MainActivity.AlarmToRing_Datas.size()) {
