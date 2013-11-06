@@ -26,7 +26,6 @@
 	    android:id="@+id/alarm_name"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:textSize="20sp"
-	    android:text="@string/alarm_name"/>  
+	    android:textSize="20sp"/>  
 
 </LinearLayout>
