@@ -196,8 +196,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int main=0x7f080000;
     }
     public static final class string {
+        public static final int CANCEL=0x7f06001d;
+        public static final int OK=0x7f06001c;
         public static final int action_settings=0x7f060001;
-        public static final int alarm_name=0x7f06001c;
         public static final int app_name=0x7f060000;
         public static final int button_ringselect=0x7f060009;
         public static final int button_ringstart=0x7f06000b;
@@ -214,8 +215,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int notify_button=0x7f060018;
         public static final int ringcontent=0x7f060019;
         public static final int ringcontent_blank=0x7f06001a;
-        public static final int ringdate=0x7f06001e;
-        public static final int ringdate_blank=0x7f06001f;
+        public static final int ringdate=0x7f06001f;
+        public static final int ringdate_blank=0x7f060020;
         public static final int ringhour=0x7f060002;
         public static final int ringing=0x7f06000c;
         public static final int ringminute=0x7f060003;
@@ -223,9 +224,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ringselect=0x7f060007;
         public static final int ringselectTitle=0x7f060008;
         public static final int ringset=0x7f06000e;
-        public static final int ringtime=0x7f06001d;
+        public static final int ringtime=0x7f06001e;
         public static final int ringtime_blank=0x7f060005;
-        public static final int setting_date=0x7f060020;
+        public static final int setting_date=0x7f060021;
         public static final int setting_time=0x7f060006;
         public static final int setvibrate=0x7f06000f;
         public static final int showhourminute=0x7f060004;

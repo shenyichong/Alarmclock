@@ -43,7 +43,7 @@ public class clockNameDialog extends DialogFragment{
         }
     }
 	
-	public static String alarmName = "午睡闹钟";
+	public static String alarmName;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -57,14 +57,14 @@ public class clockNameDialog extends DialogFragment{
 		nameAlarmText.setText(AlarmContentFragment.alarm_name);
 		
 		nameBuilder.setView(clockNameDialogView);
-		nameBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		nameBuilder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
 					   @Override    
 					   public void onClick(DialogInterface dialog, int id) {
 			                   // User confirmed the dialog
 						   	   alarmName=nameAlarmText.getText().toString();
 			               }
 			           });
-		nameBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		nameBuilder.setNegativeButton(getResources().getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
 					       public void onClick(DialogInterface dialog, int id) {
 					           // User cancelled the dialog
 					    	   alarmName=AlarmContentFragment.alarm_name;
