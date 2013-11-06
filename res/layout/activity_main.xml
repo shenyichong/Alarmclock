@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -104,8 +105,7 @@
 	       	android:textSize="18sp"
 	        android:hint="@string/ringcontent_blank"
 	        android:clickable="true"
-	        android:gravity="center"
-	        android:onClick="fillinName" />
+	        android:gravity="center" />
 	    
 	</LinearLayout>
 	
@@ -137,8 +137,8 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:textSize="15sp"
-	        android:text="@string/button_ringselect"
-	        android:onClick="selectRingtone"/>	        
+	        android:text="@string/button_ringselect"/>
+	        <!-- android:onClick="selectRingtone" -->	        
 	</LinearLayout>
 	
 	<LinearLayout
@@ -171,8 +171,9 @@
 		    android:id="@+id/Ring_set"
 		    android:layout_marginLeft="10dp"
 		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:onClick="setRing"/>	    
+		    android:layout_height="wrap_content"/>
+		    <!-- android:onClick="setRing" -->	    
 	</LinearLayout>
 
 </RelativeLayout>
+

@@ -1,6 +1,7 @@
 package com.firstapp.alarmclock;
 
 
+import com.firstapp.alarmclock.AlarmContentFragment.ClockChangeListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,8 +28,22 @@ public class clockNameDialog extends DialogFragment{
 	
 	// Use this instance of the interface to deliver action events
 	NameDialogListener mListener;*/
+	public interface clockNameChangeListener{
+		public void onClockNameChange(String str);
+	}
+	clockNameChangeListener mclocknameChange;
 	
-	public static String alarmName = "午睡闹钟";
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+        	mclocknameChange = (clockNameChangeListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement clockNameChangeListener");
+        }
+    }
+	
+	public static String alarmName;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -39,20 +54,20 @@ public class clockNameDialog extends DialogFragment{
 		
 		final View clockNameDialogView = inflater.inflate(R.layout.dialog_alarm_name, null);
 		final EditText nameAlarmText = (EditText) clockNameDialogView.findViewById(R.id.alarm_name);
-		nameAlarmText.setText(MainActivity.alarm_name);
+		nameAlarmText.setText(AlarmContentFragment.alarm_name);
 		
 		nameBuilder.setView(clockNameDialogView);
-		nameBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		nameBuilder.setPositiveButton(getResources().getString(R.string.OK), new DialogInterface.OnClickListener() {
 					   @Override    
 					   public void onClick(DialogInterface dialog, int id) {
 			                   // User confirmed the dialog
-						   alarmName=nameAlarmText.getText().toString();
+						   	   alarmName=nameAlarmText.getText().toString();
 			               }
 			           });
-		nameBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		nameBuilder.setNegativeButton(getResources().getString(R.string.CANCEL), new DialogInterface.OnClickListener() {
 					       public void onClick(DialogInterface dialog, int id) {
 					           // User cancelled the dialog
-					    	   //mListener.onDialogNegativeClick(clockNameDialog.this);
+					    	   alarmName=AlarmContentFragment.alarm_name;
 					    	   clockNameDialog.this.getDialog().cancel();
 					       }
 					    });
@@ -61,9 +76,11 @@ public class clockNameDialog extends DialogFragment{
 	
 	public void onDestroyView (){
 		TextView v = (TextView)getActivity().findViewById(R.id.ringcontent_blank);
-		MainActivity.alarm_name=alarmName;
+		AlarmContentFragment.alarm_name=alarmName;
 		v.setText(alarmName);
 		super.onDestroyView();
+		TextView hour_minute_View = (TextView)getActivity().findViewById(R.id.ringHourMinuteShow);
+		mclocknameChange.onClockNameChange(hour_minute_View.getText()+" "+alarmName);
 	}
 	
 }
