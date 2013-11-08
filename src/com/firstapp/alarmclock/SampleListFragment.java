@@ -58,8 +58,8 @@ public class SampleListFragment extends ListFragment{
             adapter.add(new SampleItem(MainActivity.AlarmNames.get(i), R.drawable.notify_button,MainActivity.AlarmCheckbox.get(i)));  
         }
         setListAdapter(adapter);
-        AddAdapter adapter2 = new AddAdapter(getActivity());
-        adapter2.add(new addItem(getResources().getString(R.string.add_view), R.drawable.add_icon));
+        /*AddAdapter adapter2 = new AddAdapter(getActivity());
+        adapter2.add(new addItem(getResources().getString(R.string.add_view), R.drawable.add_icon));*/
     }
 	
 	private void setCheckBox(View view){
@@ -124,7 +124,7 @@ public class SampleListFragment extends ListFragment{
         
     } 
 	
-	public class addItem{
+	/*public class addItem{
 		public String addText;
 		public int addIcon;
 		public addItem(String addtext,int addicon){
@@ -153,5 +153,5 @@ public class SampleListFragment extends ListFragment{
 
 			return convertView ;
 		}
-	}
+	}*/
 }
