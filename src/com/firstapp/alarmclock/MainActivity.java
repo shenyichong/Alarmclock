@@ -42,8 +42,9 @@ public class MainActivity extends Activity
 	private static final String STATE_MUSIC = "MUSIC";
 	
 	
-	static int menu_number;
-	static int cur_menu_number;
+	public static int menu_number;
+	public static int cur_menu_number;
+	
 	public static ArrayList<String> AlarmNames = new ArrayList<String>();
 	public static ArrayList<Boolean> AlarmCheckbox = new ArrayList<Boolean>();
 	public static ArrayList<Long> AlarmTimes = new ArrayList<Long>();

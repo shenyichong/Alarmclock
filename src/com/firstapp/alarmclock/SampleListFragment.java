@@ -2,6 +2,9 @@ package com.firstapp.alarmclock;
 
 
 import com.firstapp.alarmclock.R;
+import com.firstapp.alarmclock.R.string;
+
+import android.R.integer;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
@@ -54,10 +57,12 @@ public class SampleListFragment extends ListFragment{
         for (int i = 0; i < ListNum; i++) { 
             adapter.add(new SampleItem(MainActivity.AlarmNames.get(i), R.drawable.notify_button,MainActivity.AlarmCheckbox.get(i)));  
         }
-        setListAdapter(adapter); 
+        setListAdapter(adapter);
+        AddAdapter adapter2 = new AddAdapter(getActivity());
+        adapter2.add(new addItem(getResources().getString(R.string.add_view), R.drawable.add_icon));
     }
 	
-	public void setCheckBox(View view){
+	private void setCheckBox(View view){
 		CheckBox checkboxView = (CheckBox) view;
 		int position = (Integer)checkboxView.getTag();
 		boolean checkbox = checkboxView.isChecked();
@@ -65,6 +70,10 @@ public class SampleListFragment extends ListFragment{
 		MainActivity.AlarmCheckbox.set(position,checkbox);
 		
 		mCheckBoxListerner.onCheckBoxClicked(checkbox,position);
+	}
+	
+	private void onAddAlarm(View view){
+		
 	}
 	
 	@Override
@@ -112,5 +121,37 @@ public class SampleListFragment extends ListFragment{
       		});
             return convertView;  
         } 
+        
     } 
+	
+	public class addItem{
+		public String addText;
+		public int addIcon;
+		public addItem(String addtext,int addicon){
+			this.addText=addtext;
+			this.addIcon=addicon;
+		}
+	}
+	public class AddAdapter extends ArrayAdapter<addItem>{
+		public AddAdapter(Context context) {  
+            super(context, 0);  
+        } 
+		public View getView(int position, View convertView, ViewGroup parent){
+			if (convertView == null) {  
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_addbutton, null);  
+            } 
+			ImageView iconView = (ImageView) convertView.findViewById(R.id.add_icon);  
+			iconView.setImageResource(getItem(position).addIcon);  
+			TextView textView = (TextView) convertView.findViewById(R.id.add_alarm);
+			textView.setText(getItem(position).addText); 
+			textView.setOnClickListener(new View.OnClickListener() {
+      		    @Override
+      		    public void onClick(View view) {
+      		    	onAddAlarm(view);
+      		    }
+      		});
+
+			return convertView ;
+		}
+	}
 }

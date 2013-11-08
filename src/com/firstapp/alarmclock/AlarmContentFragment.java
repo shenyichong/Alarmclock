@@ -43,22 +43,22 @@ public class AlarmContentFragment extends Fragment{
 	
 	private static final String STATE_TIMEINMILLS = "TIMEINMILLS";
 	
-	static int contentFragNum;
-	static String preferencesNameString;
+	public static int contentFragNum;
+	public static String preferencesNameString;
 	
-	static int hourIntoflag=0;
-	static String ringtone_name;
-	static Long TimeInMills;
-	static int Hour;
-	static int Minute;
-	static int Year;
-	static int Month;
-	static int Day;
-	static Uri ringtone_Uri;
-	static String music_name;
-	static boolean buttonOn;
-	static boolean buttonVibrate;
-	static String alarm_name;
+	public static int hourIntoflag=0;
+	public static String ringtone_name;
+	public static Long TimeInMills;
+	public static int Hour;
+	public static int Minute;
+	public static int Year;
+	public static int Month;
+	public static int Day;
+	public static Uri ringtone_Uri;
+	public static String music_name;
+	public static boolean buttonOn;
+	public static boolean buttonVibrate;
+	public static String alarm_name;
 	
 	public interface ClockChangeListener{
 		public void onClockChange(String TimeShown);
@@ -207,13 +207,13 @@ public class AlarmContentFragment extends Fragment{
       	
     }
 	
-	public void fillinName(View view){
+	private void fillinName(View view){
 		DialogFragment newFragment = new clockNameDialog();
 	    newFragment.show(getFragmentManager(), "Alarm_Name"); 
 	}
 	
 	/*select ring*/
-	public void selectRingtone(View v){
+	private void selectRingtone(View v){
 		Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
 		intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getResources().getString(R.string.ringselectTitle));
 		intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
@@ -252,7 +252,7 @@ public class AlarmContentFragment extends Fragment{
 		}
 	}
 	
-	public void setVibrate(View view){
+	private void setVibrate(View view){
 		buttonVibrate = ((ToggleButton) view).isChecked();
 	}
 	
@@ -298,7 +298,7 @@ public class AlarmContentFragment extends Fragment{
 	
 	
 	//prepare to set the alarm 
-	public void setRing(View view){
+	private void setRing(View view){
 		
 		buttonOn = ((ToggleButton) view).isChecked();
 		
