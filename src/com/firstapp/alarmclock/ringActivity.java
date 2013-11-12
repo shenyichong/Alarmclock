@@ -2,9 +2,6 @@ package com.firstapp.alarmclock;
 
 
 import java.io.IOException;
-import java.net.URI;
-
-import android.R.integer;
 import android.app.Activity;
 import android.app.Notification;
 import android.content.Context;

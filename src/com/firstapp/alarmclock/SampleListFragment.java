@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 public class SampleListFragment extends ListFragment{ 
 	
+	//ListNum is the number of Alarms,not including the add button.
 	public int ListNum;
 	
 	public interface OnItemClickedListener {
@@ -42,12 +43,10 @@ public class SampleListFragment extends ListFragment{
 		} catch (Exception e) {
 			throw new ClassCastException(activity.toString() + " must implement CheckBoxListerner");
 		}
-        
     }
-	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {  
         return inflater.inflate(R.layout.list, null); 
-    }  
+    } 
 	public void onActivityCreated(Bundle savedInstanceState) {  
         super.onActivityCreated(savedInstanceState);  
         SampleAdapter adapter = new SampleAdapter(getActivity());  
@@ -61,9 +60,7 @@ public class SampleListFragment extends ListFragment{
 		CheckBox checkboxView = (CheckBox) view;
 		int position = (Integer)checkboxView.getTag();
 		boolean checkbox = checkboxView.isChecked();
-		
 		MainActivity.AlarmCheckbox.set(position,checkbox);
-		
 		mCheckBoxListerner.onCheckBoxClicked(checkbox,position);
 	}
 	
@@ -75,8 +72,8 @@ public class SampleListFragment extends ListFragment{
 	}
 	
 	
-	
-	public class SampleItem {  
+	//class for the alarm button.
+	public class SampleItem { 
         public String tag;  
         public int iconRes; 
         public boolean checkbox;
@@ -90,7 +87,7 @@ public class SampleListFragment extends ListFragment{
 	public class SampleAdapter extends ArrayAdapter<SampleItem> {  
 	  
         public SampleAdapter(Context context) {  
-            super(context, 0);  
+            super(context, 0); 
         } 
         public View getView(int position, View convertView, ViewGroup parent) {  
             if (convertView == null) {  
@@ -99,7 +96,7 @@ public class SampleListFragment extends ListFragment{
             ImageView icon = (ImageView) convertView.findViewById(R.id.row_icon);  
             icon.setImageResource(getItem(position).iconRes);  
             TextView title = (TextView) convertView.findViewById(R.id.row_title);  
-            title.setText(getItem(position).tag);  
+            title.setText(getItem(position).tag); 
             CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.row_checkbox);
             checkBox.setChecked(getItem(position).checkbox);
             checkBox.setTag(position);
