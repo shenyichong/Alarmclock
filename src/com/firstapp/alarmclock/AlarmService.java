@@ -22,6 +22,8 @@ public class AlarmService extends Service{
 	private static AlarmService instance;
 	private static Vector<PendingIntent> pendingIntentVector = new Vector<PendingIntent>();
 	
+	public static boolean isDestroyedbyOther ;
+	
 	public static AlarmService getServiceInstance(){
 		return instance;
 	}
@@ -31,6 +33,7 @@ public class AlarmService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    // We want this service to continue running until it is explicitly
 	    // stopped, so return sticky.
+		isDestroyedbyOther=false;
 		instance = this;
 		Intent i=new Intent(this, MyAlarmReceiver.class);
 		AlarmManager alarmMgr=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -44,7 +47,7 @@ public class AlarmService extends Service{
 		AlarmRingNum = MainActivity.AlarmToRing_Datas.size();
 		for (int j = 0; j < AlarmRingNum; j++) {
 			pendingIntentVector.add(PendingIntent.getBroadcast(this, j, i, 0));
-			alarmMgr.set(AlarmManager.RTC_WAKEUP,MainActivity.AlarmToRing_Datas.get(j).TimeInMills,pendingIntentVector.get(j));
+			alarmMgr.set(AlarmManager.RTC_WAKEUP, MainActivity.AlarmToRing_Datas.get(j).TimeInMills, pendingIntentVector.get(j));
 		}
 		
 		
@@ -83,7 +86,13 @@ public class AlarmService extends Service{
 	@Override
     public void onDestroy() {
         // The service is no longer used and is being destroyed
-		instance=null;
-		this.stopForeground(true);
+		if (isDestroyedbyOther) {
+			Intent localIntent = new Intent();
+			localIntent.setClass(this, AlarmService.class); //销毁时重新启动Service
+			this.startService(localIntent);
+		}else {
+			instance=null;
+			this.stopForeground(true);
+		}
     }
 }
