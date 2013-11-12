@@ -33,4 +33,6 @@
 	
 	<string name="OK">确定</string>
 	<string name="CANCEL">取消</string>
+	
+	<string name="add_view">添加一个闹钟</string>
 </resources>
