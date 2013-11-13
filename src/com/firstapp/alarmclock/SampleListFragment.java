@@ -69,9 +69,9 @@ public class SampleListFragment extends ListFragment{
 		mCheckBoxListerner.onCheckBoxClicked(checkbox,position);
 	}
 	
-	private void onAddAlarm(View view){
+	/*private void onAddAlarm(View view){
 		
-	}
+	}*/
 	
 	@Override
     public void onListItemClick(ListView l, View v, int position, long id){

@@ -48,7 +48,6 @@ public class AlarmService extends Service{
 		}
 		
 		
-		
 		notebuilder.setSmallIcon(R.drawable.notification_bar);
 		notebuilder.setContentTitle(getResources().getString(R.string.app_name));
 		//set the ringing time
