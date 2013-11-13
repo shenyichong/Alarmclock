@@ -85,6 +85,7 @@ public class MainActivity extends Activity
 		
 		 if (AlarmService.getServiceInstance() !=null ) {
 				AlarmService instance = AlarmService.getServiceInstance();
+				AlarmService.isDestroyedbyOther = false;
 				instance.onDestroy();
 			}
 		

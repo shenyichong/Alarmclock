@@ -173,6 +173,7 @@ public class ringActivity extends Activity{
         	runningService.startForeground(1, note);
 		}else {
 			//stop serivce
+			AlarmService.isDestroyedbyOther = false;
 			this.stopService(new Intent(this,AlarmService.class));
 		}
         cur_AlarmRingNum = cur_AlarmRingNum+1;
