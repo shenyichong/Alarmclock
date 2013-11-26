@@ -118,7 +118,6 @@ public class SampleListFragment extends ListFragment{
       		});
             return convertView;  
         } 
-        
     } 
 	
 	/*public class addItem{

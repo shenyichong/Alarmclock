@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 
 public class AlarmService extends Service{
@@ -74,7 +75,7 @@ public class AlarmService extends Service{
 		Notification note = notebuilder.build();
 		this.startForeground(1, note);
 		
-		return START_STICKY;
+		return START_NOT_STICKY;
 	}
 	@Override
 	public IBinder onBind(Intent intent) {
